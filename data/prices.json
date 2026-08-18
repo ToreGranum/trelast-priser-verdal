@@ -1,14 +1,14 @@
 {
-  "updated_at": "2026-08-18T05:21:59.596580+00:00",
+  "updated_at": "2026-08-18T05:33:47.096485+00:00",
   "items": [
     {
       "store": "OBS BYGG Verdal",
       "dimension": "48x98",
       "type": "ubh",
-      "price_per_meter": null,
-      "verified_local": false,
-      "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:16:34.629204+00:00"
+      "price_per_meter": 41.9,
+      "verified_local": true,
+      "status": "Lokalpris bekreftet",
+      "checked_at": "2026-08-18T05:24:28.250545+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -17,7 +17,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:18:45.069549+00:00"
+      "checked_at": "2026-08-18T05:28:56.792452+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -26,7 +26,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:00.815370+00:00"
+      "checked_at": "2026-08-18T05:32:09.712244+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -35,7 +35,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:16:40.086672+00:00"
+      "checked_at": "2026-08-18T05:24:36.186999+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -44,7 +44,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:18:49.915962+00:00"
+      "checked_at": "2026-08-18T05:29:03.625550+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -53,7 +53,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:04.476305+00:00"
+      "checked_at": "2026-08-18T05:32:15.828698+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -62,7 +62,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:16:45.414130+00:00"
+      "checked_at": "2026-08-18T05:24:43.937845+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -71,7 +71,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:18:54.107329+00:00"
+      "checked_at": "2026-08-18T05:29:10.234441+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -80,16 +80,16 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:08.137021+00:00"
+      "checked_at": "2026-08-18T05:32:21.921133+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
       "dimension": "48x98",
       "type": "imp",
-      "price_per_meter": null,
-      "verified_local": false,
-      "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:17:12.094182+00:00"
+      "price_per_meter": 29.5,
+      "verified_local": true,
+      "status": "Lokalpris bekreftet",
+      "checked_at": "2026-08-18T05:26:05.562279+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -98,7 +98,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:19:35.232952+00:00"
+      "checked_at": "2026-08-18T05:30:06.857812+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -107,7 +107,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:22.781793+00:00"
+      "checked_at": "2026-08-18T05:32:46.260619+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -116,7 +116,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:17:17.356232+00:00"
+      "checked_at": "2026-08-18T05:26:13.284277+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -125,7 +125,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:19:39.858474+00:00"
+      "checked_at": "2026-08-18T05:30:13.623358+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -134,7 +134,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:26.442515+00:00"
+      "checked_at": "2026-08-18T05:32:52.337383+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -143,7 +143,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:17:22.531653+00:00"
+      "checked_at": "2026-08-18T05:26:21.010967+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -152,7 +152,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:19:44.013051+00:00"
+      "checked_at": "2026-08-18T05:30:20.225950+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -161,16 +161,16 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:30.101665+00:00"
+      "checked_at": "2026-08-18T05:32:58.412084+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
       "dimension": "23x048",
       "type": "ubh",
-      "price_per_meter": null,
-      "verified_local": false,
-      "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:16:50.716807+00:00"
+      "price_per_meter": 14.7,
+      "verified_local": true,
+      "status": "Lokalpris bekreftet",
+      "checked_at": "2026-08-18T05:25:06.876367+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -179,7 +179,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:18:58.283768+00:00"
+      "checked_at": "2026-08-18T05:29:16.828630+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -188,16 +188,16 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:11.796638+00:00"
+      "checked_at": "2026-08-18T05:32:27.993719+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
       "dimension": "30x048",
       "type": "ubh",
-      "price_per_meter": null,
-      "verified_local": false,
-      "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:16:55.973092+00:00"
+      "price_per_meter": 16.85,
+      "verified_local": true,
+      "status": "Lokalpris bekreftet",
+      "checked_at": "2026-08-18T05:25:29.064893+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -206,7 +206,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:19:09.738310+00:00"
+      "checked_at": "2026-08-18T05:29:32.539261+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -215,16 +215,16 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:15.451086+00:00"
+      "checked_at": "2026-08-18T05:32:34.073120+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
       "dimension": "36x048",
       "type": "ubh",
-      "price_per_meter": null,
-      "verified_local": false,
-      "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:17:01.230189+00:00"
+      "price_per_meter": 21.85,
+      "verified_local": true,
+      "status": "Lokalpris bekreftet",
+      "checked_at": "2026-08-18T05:25:51.231617+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -233,7 +233,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:19:27.994266+00:00"
+      "checked_at": "2026-08-18T05:29:57.313978+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -242,16 +242,16 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:19.126386+00:00"
+      "checked_at": "2026-08-18T05:32:40.178614+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
       "dimension": "23x048",
       "type": "imp",
-      "price_per_meter": null,
-      "verified_local": false,
-      "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:17:27.742006+00:00"
+      "price_per_meter": 16.9,
+      "verified_local": true,
+      "status": "Lokalpris bekreftet",
+      "checked_at": "2026-08-18T05:26:43.230601+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -260,7 +260,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:19:55.220790+00:00"
+      "checked_at": "2026-08-18T05:30:35.932664+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -269,16 +269,16 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:33.782330+00:00"
+      "checked_at": "2026-08-18T05:33:04.482234+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
       "dimension": "30x048",
       "type": "imp",
-      "price_per_meter": null,
-      "verified_local": false,
-      "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:17:32.929646+00:00"
+      "price_per_meter": 19.9,
+      "verified_local": true,
+      "status": "Lokalpris bekreftet",
+      "checked_at": "2026-08-18T05:27:05.249997+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -287,7 +287,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:20:06.381151+00:00"
+      "checked_at": "2026-08-18T05:30:51.633213+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -296,16 +296,16 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:37.474086+00:00"
+      "checked_at": "2026-08-18T05:33:10.560214+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
       "dimension": "36x048",
       "type": "imp",
-      "price_per_meter": null,
-      "verified_local": false,
-      "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:17:38.115457+00:00"
+      "price_per_meter": 20.45,
+      "verified_local": true,
+      "status": "Lokalpris bekreftet",
+      "checked_at": "2026-08-18T05:27:27.191133+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -314,7 +314,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:20:24.431414+00:00"
+      "checked_at": "2026-08-18T05:31:16.534145+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -323,16 +323,16 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:41.134927+00:00"
+      "checked_at": "2026-08-18T05:33:16.636525+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
       "dimension": "16x098",
       "type": "grunnet",
-      "price_per_meter": null,
-      "verified_local": false,
-      "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:17:43.855738+00:00"
+      "price_per_meter": 21.81,
+      "verified_local": true,
+      "status": "Lokalpris bekreftet",
+      "checked_at": "2026-08-18T05:27:49.300197+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -341,7 +341,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:20:28.880482+00:00"
+      "checked_at": "2026-08-18T05:31:23.343138+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -350,16 +350,16 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:44.824437+00:00"
+      "checked_at": "2026-08-18T05:33:22.729737+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
       "dimension": "19x098",
       "type": "grunnet",
-      "price_per_meter": null,
-      "verified_local": false,
-      "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:17:49.072562+00:00"
+      "price_per_meter": 28.18,
+      "verified_local": true,
+      "status": "Lokalpris bekreftet",
+      "checked_at": "2026-08-18T05:28:11.427701+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -368,7 +368,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:20:33.059297+00:00"
+      "checked_at": "2026-08-18T05:31:30.004612+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -377,16 +377,16 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:48.479163+00:00"
+      "checked_at": "2026-08-18T05:33:28.813678+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
       "dimension": "19x148",
       "type": "grunnet",
-      "price_per_meter": null,
-      "verified_local": false,
-      "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:18:26.823433+00:00"
+      "price_per_meter": 36.72,
+      "verified_local": true,
+      "status": "Lokalpris bekreftet",
+      "checked_at": "2026-08-18T05:28:33.583472+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -395,7 +395,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:20:44.133439+00:00"
+      "checked_at": "2026-08-18T05:31:45.692223+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -404,7 +404,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:52.137013+00:00"
+      "checked_at": "2026-08-18T05:33:34.883204+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -413,7 +413,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:18:32.066128+00:00"
+      "checked_at": "2026-08-18T05:28:41.351222+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -422,7 +422,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:20:48.321770+00:00"
+      "checked_at": "2026-08-18T05:31:52.297226+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -431,7 +431,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:55.861035+00:00"
+      "checked_at": "2026-08-18T05:33:40.960238+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -440,7 +440,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:18:37.331318+00:00"
+      "checked_at": "2026-08-18T05:28:49.052774+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -449,7 +449,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:20:59.565749+00:00"
+      "checked_at": "2026-08-18T05:32:07.978607+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -458,7 +458,7 @@
       "price_per_meter": null,
       "verified_local": false,
       "status": "Ingen bekreftet lokalpris",
-      "checked_at": "2026-08-18T05:21:59.557511+00:00"
+      "checked_at": "2026-08-18T05:33:47.046153+00:00"
     }
   ]
 }
