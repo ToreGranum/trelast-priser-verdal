@@ -49,7 +49,7 @@ KNOWN_PRODUCTS = [
     ("OBS BYGG Verdal", "https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/impregnert-konstruksjonsvirke-----0-2514104-2291725/3003426", "48x98", "imp"),
     ("Bygger'n Verdal", "https://www.byggern.no/product/54313798", "48x98", "ubh"),
     ("Bygger'n Verdal", "https://www.byggern.no/product/54230960", "48x98", "imp"),
-    ("XL-BYGG Skogn", "https://www.xl-bygg.no/product/moelven-gran-48x098x4800-k-virke-c24-fl-49556178", "48x98", "ubh"),
+    ("XL-BYGG Skogn", "https://www.xl-bygg.no/product/moelven-gran-48x098-k-virke-c24-500357616", "48x98", "ubh"),
 ]
 
 
@@ -61,55 +61,92 @@ def dimension_matches(text: str, dimension: str) -> bool:
     n = norm(text)
     a, b = dimension.lower().split("x")
     b_int = str(int(b))
-    candidates = {b, b_int, b_int.zfill(3)}
-    return any(norm(f"{a}x{candidate}") in n for candidate in candidates)
+    return any(norm(f"{a}x{candidate}") in n for candidate in {b, b_int, b_int.zfill(3)})
+
+
+def _number(value):
+    try:
+        return float(str(value).replace(" ", "").replace(".", "").replace(",", "."))
+    except (TypeError, ValueError):
+        try:
+            return float(str(value).replace(",", "."))
+        except (TypeError, ValueError):
+            return None
 
 
 def parse_product_price(text: str):
-    """Return the concrete product price, preferably explicitly marked per stk/enhet.
+    """Hent prisen slik butikken faktisk oppgir den på produktsiden.
 
-    We deliberately DO NOT parse /m, pr m, meter or løpemeter. The comparison is
-    now based on the actual product's selling price, normally per piece (stk).
+    Vi konverterer ikke til pris/m. Et produkt kan derfor bli lagret som stk,
+    m, pakke osv. Poenget er å bruke konkret produktpris og original enhet.
     """
     cleaned = re.sub(r"\s+", " ", text.replace("\u00a0", " ")).strip()
 
-    # First choice: a price explicitly expressed per piece/unit.
-    unit_patterns = [
-        r"(?:kr\s*)?(\d{1,5}(?:[.,]\d{1,2})?)\s*(?:kr\s*)?(?:/|per\s+|pr\.?\s+)?(?:stk|stykk|enhet)\b",
-        r"(?:kr\s*)?(\d{1,5})\s+(\d{2})\s*(?:kr\s*)?(?:/|per\s+|pr\.?\s+)?(?:stk|stykk|enhet)\b",
-        r"(?:pris|salgspris|nettpris)[^0-9]{0,30}(?:kr\s*)?(\d{1,5}(?:[.,]\d{1,2})?)\s*(?:kr)?",
+    # JSON-LD er ofte den mest stabile kilden på moderne nettbutikker.
+    # Vi bruker bare tilbud som faktisk finnes på produktsiden.
+    # Hvis samme pris tydelig står med /m, beholdes m som original enhet.
+    # Playwright legger script-innhold i body-text på enkelte sider, så dette
+    # fungerer også som tekstfallback.
+    patterns = [
+        (r"(?:kr\s*)?(\d{1,6}(?:[.,]\d{1,2})?)\s*(?:kr\s*)?(?:/\s*)?(stk|stykk|enhet|pakke|pk|m|meter|lm|løpemeter)\b", 1),
+        (r"(?:pris|salgspris|nettpris)[^0-9]{0,40}(?:kr\s*)?(\d{1,6}(?:[.,]\d{1,2})?)\s*(?:kr)?", 1),
     ]
-    for pattern in unit_patterns:
-        match = re.search(pattern, cleaned, flags=re.I)
-        if not match:
-            continue
-        if len(match.groups()) == 2 and match.group(2).isdigit():
-            value = f"{match.group(1)}.{match.group(2)}"
-        else:
-            value = match.group(1).replace(" ", "").replace(",", ".")
-        try:
-            price = float(value)
-            if price > 0:
-                return price, "stk"
-        except ValueError:
-            pass
 
-    # Many product pages show the concrete price without a unit near the price.
-    # Use a short context window around price labels, but never accept /m or
-    # løpemeter prices as a fallback.
+    # Foretrekk eksplisitt enhet.
+    for pattern, _ in patterns[:1]:
+        for match in re.finditer(pattern, cleaned, flags=re.I):
+            price = _number(match.group(1))
+            unit = match.group(2).lower()
+            if price is None or price <= 0:
+                continue
+            if unit in {"stk", "stykk", "enhet"}:
+                unit = "stk"
+            elif unit in {"pk", "pakke"}:
+                unit = "pakke"
+            elif unit in {"lm", "løpemeter"}:
+                unit = "m"
+            return price, unit
+
+    # Vanlige produktsider viser bare f.eks. "41,90" ved siden av kjøpsfeltet.
+    # Bruk et kort pris-kontekstområde, men ta med eventuell original enhet.
     for label in ("salgspris", "nettpris", "pris"):
         for match in re.finditer(label, cleaned, flags=re.I):
             context = cleaned[match.start():match.start() + 180]
-            if re.search(r"(?:/\s*m|pr\.?\s*m\b|per\s*m\b|løpemeter|meter)", context, flags=re.I):
+            price_match = re.search(r"(?:kr\s*)?(\d{1,6}(?:[.,]\d{1,2})?)\s*(?:kr)?", context, flags=re.I)
+            if not price_match:
                 continue
-            price_match = re.search(r"(?:kr\s*)?(\d{1,5}(?:[.,]\d{1,2})?)\s*(?:kr)?", context, flags=re.I)
-            if price_match:
-                try:
-                    price = float(price_match.group(1).replace(",", "."))
-                    if price > 0:
-                        return price, "stk"
-                except ValueError:
-                    pass
+            price = _number(price_match.group(1))
+            if price is None or price <= 0:
+                continue
+            unit_match = re.search(r"(?:/|per|pr\.?)\s*(stk|stykk|enhet|pakke|pk|m|meter|lm|løpemeter)\b", context, flags=re.I)
+            unit = unit_match.group(1).lower() if unit_match else "stk"
+            if unit in {"stk", "stykk", "enhet"}:
+                unit = "stk"
+            elif unit in {"pk", "pakke"}:
+                unit = "pakke"
+            else:
+                unit = "m"
+            return price, unit
+
+    # Sist: et tydelig norsk prisbeløp i den øvre delen av produktsiden.
+    # Dette er kun fallback for butikker som ikke bruker prisetikett.
+    head = cleaned[:6000]
+    for match in re.finditer(r"(?:kr\s*)?(\d{1,5}[.,]\d{2})\b", head):
+        price = _number(match.group(1))
+        if price is None or price <= 0 or price > 100000:
+            continue
+        around = head[max(0, match.start()-40):match.end()+60]
+        if re.search(r"(?:art\.?\s*nr|postnr|telefon|nummer)\s*$", around, re.I):
+            continue
+        unit_match = re.search(r"(?:/|per|pr\.?)\s*(stk|stykk|enhet|pakke|pk|m|meter|lm|løpemeter)\b", around, re.I)
+        unit = "stk" if not unit_match else unit_match.group(1).lower()
+        if unit in {"stykk", "enhet"}:
+            unit = "stk"
+        elif unit in {"pk", "pakke"}:
+            unit = "pakke"
+        elif unit in {"lm", "løpemeter", "meter"}:
+            unit = "m"
+        return price, unit
 
     return None, None
 
@@ -122,10 +159,7 @@ def visible_text(page):
 
 
 def click_store_picker(page):
-    patterns = [
-        re.compile(r"^\s*Velg butikk\s*$", re.I),
-        re.compile(r"^\s*Velg varehus\s*$", re.I),
-    ]
+    patterns = [re.compile(r"^\s*Velg butikk\s*$", re.I), re.compile(r"^\s*Velg varehus\s*$", re.I)]
     for pattern in patterns:
         for locator in [page.get_by_role("button", name=pattern), page.get_by_role("link", name=pattern), page.get_by_text(pattern)]:
             try:
@@ -146,13 +180,7 @@ def choose_store(page, store_name: str) -> bool:
     aliases = config.get("aliases", [store_name, city])
     click_store_picker(page)
 
-    search_selectors = [
-        "input[placeholder*='Søk' i]",
-        "input[placeholder*='butikk' i]",
-        "input[placeholder*='varehus' i]",
-        "input[type='search']",
-    ]
-    for selector in search_selectors:
+    for selector in ["input[placeholder*='Søk' i]", "input[placeholder*='butikk' i]", "input[placeholder*='varehus' i]", "input[type='search']"]:
         try:
             inputs = page.locator(selector)
             for i in range(min(inputs.count(), 5)):
@@ -164,7 +192,6 @@ def choose_store(page, store_name: str) -> bool:
         except Exception:
             pass
 
-    clicked = False
     for name in aliases + [store_name, city]:
         try:
             exact = page.get_by_text(name, exact=True)
@@ -173,35 +200,26 @@ def choose_store(page, store_name: str) -> bool:
                 if item.is_visible(timeout=500):
                     item.click(timeout=3000)
                     page.wait_for_timeout(1800)
-                    clicked = True
-                    break
-            if clicked:
-                break
+                    return True
         except Exception:
             pass
 
-    if not clicked:
-        for name in aliases:
-            try:
-                loc = page.get_by_role("button", name=re.compile(re.escape(name), re.I))
-                for i in range(min(loc.count(), 8)):
-                    item = loc.nth(i)
-                    if item.is_visible(timeout=500):
-                        item.click(timeout=3000)
-                        page.wait_for_timeout(1800)
-                        clicked = True
-                        break
-                if clicked:
-                    break
-            except Exception:
-                pass
+    for name in aliases:
+        try:
+            loc = page.get_by_role("button", name=re.compile(re.escape(name), re.I))
+            for i in range(min(loc.count(), 8)):
+                item = loc.nth(i)
+                if item.is_visible(timeout=500):
+                    item.click(timeout=3000)
+                    page.wait_for_timeout(1800)
+                    return True
+        except Exception:
+            pass
 
-    if not clicked:
-        print(f"STORE SELECT FAILED {store_name}")
-        return False
-
-    page.wait_for_timeout(1500)
-    return True
+    # Produktprisen kan være offentlig selv om butikkvelgeren ikke åpnet.
+    # Ikke stopp hele scrapingjobben bare fordi butikkvelgeren feiler.
+    print(f"STORE SELECT NOT CONFIRMED {store_name}")
+    return False
 
 
 def discover_links(page, category_url: str, dimension: str, kind: str):
@@ -240,18 +258,16 @@ def scrape_product(page, store_name, url, dimension, kind):
     print(f"CHECK {store_name} {dimension} {kind} {url}")
     page.goto(url, wait_until="domcontentloaded", timeout=45000)
     page.wait_for_timeout(1400)
-    if not choose_store(page, store_name):
-        print(f"NO STORE {store_name}: {url}")
-        return None, None
+    selected = choose_store(page, store_name)
     page.wait_for_timeout(1200)
     text = visible_text(page)
     if not dimension_matches(text[:18000], dimension):
         print(f"NO DIMENSION {dimension}: {url}")
-        return None, None
+        return None, None, selected
     price, unit = parse_product_price(text)
     if price is None:
         print(f"NO PRODUCT PRICE {store_name} {dimension}: {url}")
-    return price, unit
+    return price, unit, selected
 
 
 def main():
@@ -273,9 +289,10 @@ def main():
 
                     price = None
                     unit = None
+                    selected = False
                     for url in urls:
                         try:
-                            price, unit = scrape_product(page, store_name, url, dimension, kind)
+                            price, unit, selected = scrape_product(page, store_name, url, dimension, kind)
                             if price is not None:
                                 print(f"OK {store_name} {dimension} {kind}: {price:.2f} / {unit}")
                                 break
@@ -289,11 +306,11 @@ def main():
                             "type": kind,
                             "price_per_unit": price,
                             "unit": unit or "stk",
-                            "verified_local": True,
-                            "status": "Konkret produktpris bekreftet",
+                            "verified_local": bool(selected),
+                            "status": "Konkret produktpris bekreftet" + (" lokalt" if selected else " på produktsiden"),
                             "checked_at": datetime.now(timezone.utc).isoformat(),
                         }
-                    else:
+                    elif key not in old_map or old_map[key].get("price_per_unit") is None:
                         old_map[key] = {
                             "store": store_name,
                             "dimension": dimension,
@@ -304,19 +321,17 @@ def main():
                             "status": "Ingen bekreftet produktpris",
                             "checked_at": datetime.now(timezone.utc).isoformat(),
                         }
+                    else:
+                        # Ikke slett siste kjente pris bare fordi en butikk midlertidig
+                        # blokkerer eller endrer nettsiden.
+                        old_map[key]["status"] = "Sist kjente produktpris – ny kontroll feilet"
+                        old_map[key]["checked_at"] = datetime.now(timezone.utc).isoformat()
 
         context.close()
         browser.close()
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(
-        json.dumps(
-            {"updated_at": datetime.now(timezone.utc).isoformat(), "items": list(old_map.values())},
-            ensure_ascii=False,
-            indent=2,
-        ) + "\n",
-        encoding="utf-8",
-    )
+    OUT.write_text(json.dumps({"updated_at": datetime.now(timezone.utc).isoformat(), "items": list(old_map.values())}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":
