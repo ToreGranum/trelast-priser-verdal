@@ -39,7 +39,7 @@ jobs:
         run: python -m playwright install --with-deps chromium
 
       - name: Kjør robust butikkspesifikk scraper
-        run: python scraper/run_scraper.py
+        run: python -m scraper.run_scraper
 
       - name: Lagre oppdaterte priser
         run: |
