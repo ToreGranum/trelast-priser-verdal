@@ -1,0 +1,14 @@
+{
+  "updated_at": "2026-08-18T00:00:00+02:00",
+  "items": [
+    {"store":"OBS BYGG Verdal","dimension":"48x98","type":"ubh","price_per_meter":79.90,"verified_local":true,"status":"Eksempeldata – lokalpris må bekreftes av scraper"},
+    {"store":"Bygger'n Verdal","dimension":"48x98","type":"ubh","price_per_meter":82.50,"verified_local":true,"status":"Eksempeldata – lokalpris må bekreftes av scraper"},
+    {"store":"XL-BYGG Skogn","dimension":"48x98","type":"ubh","price_per_meter":84.90,"verified_local":true,"status":"Eksempeldata – lokalpris må bekreftes av scraper"},
+    {"store":"OBS BYGG Verdal","dimension":"48x148","type":"ubh","price_per_meter":119.90,"verified_local":true,"status":"Eksempeldata – lokalpris må bekreftes av scraper"},
+    {"store":"Bygger'n Verdal","dimension":"48x148","type":"ubh","price_per_meter":124.50,"verified_local":true,"status":"Eksempeldata – lokalpris må bekreftes av scraper"},
+    {"store":"XL-BYGG Skogn","dimension":"48x148","type":"ubh","price_per_meter":129.90,"verified_local":true,"status":"Eksempeldata – lokalpris må bekreftes av scraper"},
+    {"store":"OBS BYGG Verdal","dimension":"48x198","type":"ubh","price_per_meter":159.90,"verified_local":true,"status":"Eksempeldata – lokalpris må bekreftes av scraper"},
+    {"store":"Bygger'n Verdal","dimension":"48x198","type":"ubh","price_per_meter":164.50,"verified_local":true,"status":"Eksempeldata – lokalpris må bekreftes av scraper"},
+    {"store":"XL-BYGG Skogn","dimension":"48x198","type":"ubh","price_per_meter":169.90,"verified_local":true,"status":"Eksempeldata – lokalpris må bekreftes av scraper"}
+  ]
+}
