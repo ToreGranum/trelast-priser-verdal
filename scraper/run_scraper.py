@@ -9,7 +9,6 @@ def number(s):
     if re.fullmatch(r"\d{1,6}\s+\d{2}", s):
         whole, cents = s.split()
         return float(f"{whole}.{cents}")
-
     s = s.replace(" ", "")
     if "," in s and "." in s:
         if s.rfind(",") > s.rfind("."):
@@ -36,32 +35,63 @@ def unit_name(u):
 
 
 def robust_parse_product_price(text):
+    """Finn den faktiske salgsprisen på produktsiden.
+
+    Viktig: Når siden viser både pris per meter og pris per stykk/pakke,
+    prioriterer vi stykk/pakke. Vi konverterer aldri m -> stk og bruker ikke
+    kundens antall for å lage en produktpris.
+    """
     text = text.replace("\u00a0", " ")
     text = re.sub(r"\s+", " ", text).strip()
 
     unit_re = r"(stk|stykk|enhet|pcs|piece|pakke|pk|pack|m|meter|lm|løpemeter)"
     value_re = r"(\d{1,6}[.,]\d{2}|\d{1,6}\s+\d{2})"
 
+    # Ord som normalt betyr at beløpet ikke er den ordinære produktprisen.
+    bad_re = re.compile(
+        r"(?:førpris|før pris|ord\. pris|ordinær pris|medlemspris|coop-medlem|medlemspris|sparer|spar|rabatt|fra)"
+        , re.I,
+    )
+
+    candidates = []
     patterns = [
         rf"(?:kr\s*)?{value_re}\s*(?:kr\s*)?(?:/\s*|per\s+|pr\.?\s*){unit_re}\b",
         rf"(?:kr\s*)?{value_re}\s*(?:kr\s*)?{unit_re}\b",
         rf"(?:/\s*|per\s+|pr\.?\s*){unit_re}\b[^0-9]{{0,60}}(?:kr\s*)?{value_re}",
     ]
 
-    for i, pattern in enumerate(patterns):
+    for pattern_index, pattern in enumerate(patterns):
         for match in re.finditer(pattern, text, flags=re.I):
             groups = match.groups()
-            if i == 2:
+            if pattern_index == 2:
                 unit, value = groups[0], groups[1]
             else:
                 value, unit = groups[0], groups[1]
             price = number(value)
-            if price is not None and 0 < price < 100000:
-                return price, unit_name(unit)
+            if price is None or not 0 < price < 100000:
+                continue
+            context = text[max(0, match.start() - 100):min(len(text), match.end() + 100)]
+            if bad_re.search(context):
+                continue
+            candidates.append({
+                "price": price,
+                "unit": unit_name(unit),
+                "distance": abs(match.start() - text.lower().find("salgspris")),
+            })
 
+    # Et produkt kan vise både «83,90 per m» og «402,72 stk».
+    # Bruk stykk/pakke først fordi dette er den konkrete salgsprisen på varen.
+    for wanted_unit in ("stk", "pakke", "m"):
+        matching = [c for c in candidates if c["unit"] == wanted_unit]
+        if matching:
+            return matching[0]["price"], matching[0]["unit"]
+
+    # Fallback for sider som kun viser «Pris 123,45» uten enhet.
     for label in ("salgspris", "nettpris", "pris"):
         for match in re.finditer(label, text, flags=re.I):
-            context = text[match.start():match.start() + 260]
+            context = text[match.start():match.start() + 300]
+            if bad_re.search(context[:100]):
+                continue
             price_match = re.search(r"(?:kr\s*)?" + value_re, context, flags=re.I)
             if not price_match:
                 continue
@@ -197,6 +227,8 @@ def robust_scrape_product(page, store_name, url, dimension, kind):
 
     price, unit = robust_parse_product_price(text)
     if price is None:
+        # JSON-LD brukes kun som siste fallback. Vi overskriver ikke en eksplisitt
+        # «per stk/pakke»-pris som allerede står synlig på siden.
         price, unit = scraper.jsonld_price(page)
 
     if price is None:
