@@ -14,7 +14,7 @@ label{display:block;font-size:12px;font-weight:800;color:#69746e;margin-bottom:7
 select,input{width:100%;padding:13px;border:1px solid #e2e8e4;border-radius:11px;background:#fff;font-size:15px;box-sizing:border-box}
 .top{display:flex;justify-content:space-between;align-items:end;margin:28px 0 16px}.top h2{margin:0}.updated{font-size:12px;color:#69746e}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.card{border:1px solid #e2e8e4;border-radius:17px;padding:20px}.best{border:2px solid #17633d}
-.store{font-weight:800;font-size:16px;margin-bottom:17px}.price{font-size:32px;font-weight:900}.unit{font-size:14px;color:#69746e}.status{margin-top:12px;font-size:12px;color:#69746e}
+.store{font-weight:800;font-size:16px;margin-bottom:17px}.price{font-size:32px;font-weight:900}.price-link{color:inherit;text-decoration:none}.price-link:hover{text-decoration:underline}.unit{font-size:14px;color:#69746e}.status{margin-top:12px;font-size:12px;color:#69746e}.product-link{display:inline-block;margin-top:13px;color:#17633d;font-size:12px;font-weight:800;text-decoration:none}.product-link:hover{text-decoration:underline}
 .badge{display:inline-block;background:#e9f5ee;color:#17633d;padding:5px 8px;border-radius:99px;font-size:10px;font-weight:900;margin-bottom:12px}.example{background:#fff4d8;color:#8a5b00}
 .total{margin-top:20px;background:#14221b;color:#fff;border-radius:17px;padding:19px;display:flex;justify-content:space-between}.total small{color:#bdcfc4}.total strong{font-size:28px}
 .note{margin-top:18px;font-size:12px;color:#69746e}.count{font-size:12px;color:#69746e;margin-bottom:12px}
@@ -32,7 +32,7 @@ select,input{width:100%;padding:13px;border:1px solid #e2e8e4;border-radius:11px
 <div class="top"><h2 id="heading"></h2><div class="updated" id="updated">Laster prisdata…</div></div>
 <div class="count" id="count"></div><div class="grid" id="cards"></div>
 <div class="total"><div><small>Billigste bekreftede produktpris når enheten er lik</small><div id="qty"></div></div><strong id="total">–</strong></div>
-<div class="note">Prisen hentes fra det konkrete produktet slik butikken oppgir den. Vi konverterer ikke pris/m til stk. Hvis butikkene bruker ulike enheter, vises prisene separat og det beregnes ikke en falsk «billigst».</div>
+<div class="note">Prisen hentes fra det konkrete produktet slik butikken oppgir den. Klikk på «Se produkt» for å åpne varen direkte hos butikken. Vi konverterer ikke pris/m til stk.</div>
 </main>
 <script>
 const dimensions={
@@ -40,6 +40,65 @@ const dimensions={
   imp:['48x98','48x148','48x198','23x048','30x048','36x048'],
   grunnet:['16x098','19x098','19x148','22x173','22x198']
 };
+
+// Konkrete produktsider som brukes av scraperen. Lenken følger dermed
+// samme butikk + dimensjon + type som prisen gjelder for.
+const productLinks={
+  'OBS BYGG Verdal':{
+    'ubh':{
+      '48x98':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/ubehandlet-konstruksjonsvirke/3019536',
+      '48x148':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/ubehandlet-konstruksjonsvirke/3019166',
+      '48x198':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/ubehandlet-konstruksjonsvirke/3019328'
+    },
+    'imp':{
+      '48x98':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/impregnert-konstruksjonsvirke-----0-2514104-2291725/3003426',
+      '48x148':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/impregnert-konstruksjonsvirke-----0-2514104-2291725/3003403',
+      '48x198':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/impregnert-konstruksjonsvirke-----0-2514104-2291725/3003423'
+    },
+    'grunnet':{
+      '19x148':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/utvendig-kledning/2167152',
+      '22x198':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/utvendig-kledning/2242753'
+    }
+  },
+  "Bygger'n Verdal":{
+    'ubh':{
+      '48x98':'https://www.byggern.no/product/54313798',
+      '48x148':'https://www.byggern.no/product/54236866',
+      '48x198':'https://www.byggern.no/product/54237025'
+    },
+    'imp':{
+      '48x98':'https://www.byggern.no/product/54230960',
+      '48x148':'https://www.byggern.no/product/54177506',
+      '48x198':'https://www.byggern.no/product/54177525'
+    }
+  },
+  'XL-BYGG Skogn':{
+    'ubh':{
+      '48x98':'https://www.xl-bygg.no/product/moelven-gran-48x098-k-virke-c24-500357616',
+      '48x148':'https://www.xl-bygg.no/product/moelven-gran-48x148-k-virke-c24-500557012',
+      '48x198':'https://www.xl-bygg.no/product/hasas-gran-48x198-k-virke-c24-500501502',
+      '23x048':'https://www.xl-bygg.no/product/moelven-g-f-23x048-lekt-kl1-buntet-54230241',
+      '30x048':'https://www.xl-bygg.no/product/moelven-g-f-30x048-lekt-kl1-500563976',
+      '36x048':'https://www.xl-bygg.no/product/moelven-g-f-36x048-lekt-kl1-500520486'
+    },
+    'imp':{
+      '48x98':'https://www.xl-bygg.no/product/bergene-holm-furu-48x098-cuimp-k-virke-c24-54186194',
+      '48x148':'https://www.xl-bygg.no/product/hasas-furu-48x148-cuimp-k-virke-c24-54173677',
+      '48x198':'https://www.xl-bygg.no/product/hasas-furu-48x198-cuimp-k-virke-c24-54173696',
+      '23x048':'https://www.xl-bygg.no/product/bergene-holm-g-f-23x048-lekt-kl1-bnt-500442927',
+      '30x048':'https://www.xl-bygg.no/product/g3-gausdal-treindustrier-furu-30x048-lekt-kl1-cuimp-500437566',
+      '36x048':'https://www.xl-bygg.no/product/moelven-furu-36x048-lekt-kl1-cuimp-500533465'
+    },
+    'grunnet':{
+      '16x098':'https://www.xl-bygg.no/product/eggedal-sag-gran-16x098-rekt-kled-grunnet-60647936',
+      '19x098':'https://www.xl-bygg.no/product/eggedal-sag-gran-19x098-rekt-kled-grunnet-60648396',
+      '19x148':'https://www.xl-bygg.no/product/eggedal-sag-gran-19x148-rekt-kled-grunnet-60648398',
+      '22x173':'https://www.xl-bygg.no/product/moelven-gran-22x173-rektkled-bas-43236234',
+      '22x198':'https://www.xl-bygg.no/product/eggedal-sag-gran-22x198-rekt-kled-grunnet-60648406'
+    }
+  }
+};
+
 const type=document.querySelector('#type'),dim=document.querySelector('#dim'),quantity=document.querySelector('#quantity');
 let data={};
 function populateDimensions(){
@@ -49,6 +108,7 @@ function populateDimensions(){
   if((dimensions[type.value]||[]).includes(current)) dim.value=current;
 }
 function label(t){return t==='ubh'?'Ubehandlet C24':t==='imp'?'Impregnert C24':'Grunnet'}
+function productUrl(row){return row.url||productLinks[row.store]?.[row.type]?.[row.dimension]||null}
 async function load(){try{data=await fetch('data/prices.json?'+Date.now()).then(r=>r.json());render()}catch(e){document.querySelector('#updated').textContent='Prisdata kunne ikke lastes'}}
 function render(){
   const d=dim.value,t=type.value,q=Math.max(1,+quantity.value||1);
@@ -58,7 +118,10 @@ function render(){
   document.querySelector('#count').textContent=rows.length+' konkrete produktpriser tilgjengelig';
   if(!rows.length){document.querySelector('#cards').innerHTML='<p>Ingen konkret produktpris tilgjengelig ennå for denne dimensjonen og typen.</p>';document.querySelector('#qty').textContent='';document.querySelector('#total').textContent='–';return}
   const confirmed=rows.filter(r=>r.verified_local),units=[...new Set(confirmed.map(r=>r.unit||'stk'))],comparable=units.length===1,best=comparable&&confirmed.length?Math.min(...confirmed.map(r=>r.price_per_unit)):null;
-  document.querySelector('#cards').innerHTML=rows.map(x=>{const isBest=best!==null&&x.verified_local&&x.price_per_unit===best,unit=x.unit||'stk';return `<article class="card ${isBest?'best':''}">${isBest?'<div class="badge">BILLIGST</div>':x.verified_local?'':'<div class="badge example">IKKE LOKALT BEKREFTET</div>'}<div class="store">${x.store}</div><div class="price">kr ${x.price_per_unit.toLocaleString('nb-NO',{minimumFractionDigits:2})} <span class="unit">/ ${unit}</span></div><div class="status">${x.status||'Konkret produktpris bekreftet'}</div></article>`}).join('');
+  document.querySelector('#cards').innerHTML=rows.map(x=>{
+    const isBest=best!==null&&x.verified_local&&x.price_per_unit===best,unit=x.unit||'stk',url=productUrl(x);
+    return `<article class="card ${isBest?'best':''}">${isBest?'<div class="badge">BILLIGST</div>':x.verified_local?'':'<div class="badge example">IKKE LOKALT BEKREFTET</div>'}<div class="store">${x.store}</div><a class="price-link" href="${url||'#'}" target="_blank" rel="noopener noreferrer" ${url?'':'onclick="return false"'}><div class="price">kr ${x.price_per_unit.toLocaleString('nb-NO',{minimumFractionDigits:2})} <span class="unit">/ ${unit}</span></div></a><div class="status">${x.status||'Konkret produktpris bekreftet'}</div>${url?`<a class="product-link" href="${url}" target="_blank" rel="noopener noreferrer">↗ Se produkt hos ${x.store}</a>`:''}</article>`
+  }).join('');
   document.querySelector('#qty').textContent=comparable?q+' '+units[0]:'';
   document.querySelector('#total').textContent=best===null?'–':'kr '+(best*q).toLocaleString('nb-NO',{minimumFractionDigits:2});
 }
