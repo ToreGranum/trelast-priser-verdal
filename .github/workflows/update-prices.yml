@@ -38,8 +38,8 @@ jobs:
       - name: Installer Chromium
         run: python -m playwright install --with-deps chromium
 
-      - name: Kjør butikkspesifikk scraper
-        run: python scraper/scrape_prices.py
+      - name: Kjør robust butikkspesifikk scraper
+        run: python scraper/run_scraper.py
 
       - name: Lagre oppdaterte priser
         run: |
