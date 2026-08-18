@@ -29,7 +29,7 @@ STORES = {
     },
     "XL-BYGG Skogn": {
         "city": "Skogn",
-        "aliases": ["XL-BYGG Skogn", "Skogn"],
+        "aliases": ["XL-BYGG Skogn", "XL-BYGG Gunnar T. Strøm avd. Skogn", "Skogn"],
         "categories": {
             "ubh": "https://www.xl-bygg.no/category/trelast-og-byggevarer/trelast/rekker-og-lekter",
             "imp": "https://www.xl-bygg.no/category/trelast-og-byggevarer/trelast/rekker-og-lekter",
@@ -49,7 +49,7 @@ KNOWN_PRODUCTS = [
     ("OBS BYGG Verdal", "https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/impregnert-konstruksjonsvirke-----0-2514104-2291725/3003426", "48x98", "imp"),
     ("Bygger'n Verdal", "https://www.byggern.no/product/54313798", "48x98", "ubh"),
     ("Bygger'n Verdal", "https://www.byggern.no/product/54230960", "48x98", "imp"),
-    ("XL-BYGG Skogn", "https://www.xl-bygg.no/product/bergene-holm-gran-48x098x4800-k-virke-c24-500423674", "48x98", "ubh"),
+    ("XL-BYGG Skogn", "https://www.xl-bygg.no/product/moelven-gran-48x098x4800-k-virke-c24-fl-49556178", "48x98", "ubh"),
 ]
 
 
@@ -58,25 +58,25 @@ def norm(s: str) -> str:
 
 
 def dimension_matches(text: str, dimension: str) -> bool:
+    """Match dimensions after normalising both the page text and target.
+
+    The previous implementation normalised the page text (removing the 'x')
+    but searched for an unnormalised target such as '48x98'. That made every
+    dimension check fail and caused valid product pages to be discarded.
+    """
     n = norm(text)
     a, b = dimension.lower().split("x")
     b_int = str(int(b))
-    return any(f"{a}x{candidate}" in n for candidate in {b, b_int, b_int.zfill(3)})
+    candidates = {b, b_int, b_int.zfill(3)}
+    return any(norm(f"{a}x{candidate}") in n for candidate in candidates)
 
 
 def parse_price(text: str):
-    """Find a price explicitly expressed per running metre.
-
-    The retailers often render a Norwegian price as separate DOM nodes, e.g.
-    `33` `95` `per m`, which becomes `33 95 per m` in inner_text().
-    """
+    """Find a price explicitly expressed per running metre."""
     cleaned = re.sub(r"\s+", " ", text.replace("\u00a0", " ")).strip()
     patterns = [
-        # 33 95 per m / 33 95 / m
         r"(?:kr\s*)?(\d{1,5})\s+(\d{2})\s*(?:per\s*m|/\s*m|pr\.?\s*m)\b",
-        # 33,95 per m / 33.95 per m
         r"(?:kr\s*)?(\d{1,5}(?:[.,]\d{2}))\s*(?:per\s*m|/\s*m|pr\.?\s*m)\b",
-        # 33 95 kr per meter / 33,95 kr per meter
         r"(?:kr\s*)?(\d{1,5})\s+(\d{2})\s*(?:kr\s*)?(?:per\s*)?meter\b",
         r"(?:kr\s*)?(\d{1,5}(?:[.,]\d{2}))\s*(?:kr\s*)?(?:per\s*)?meter\b",
     ]
@@ -103,21 +103,20 @@ def visible_text(page):
 
 
 def click_store_picker(page):
-    # Retailers use slightly different markup. Try visible buttons/links first.
+    # Prefer the exact picker label. A broad 'butikk'/'varehus' match can hit
+    # unrelated navigation elements and leave the actual picker unopened.
     patterns = [
         re.compile(r"^\s*Velg butikk\s*$", re.I),
         re.compile(r"^\s*Velg varehus\s*$", re.I),
-        re.compile(r"butikk", re.I),
-        re.compile(r"varehus", re.I),
     ]
     for pattern in patterns:
-        for locator in [page.get_by_role("button", name=pattern), page.get_by_role("link", name=pattern)]:
+        for locator in [page.get_by_role("button", name=pattern), page.get_by_role("link", name=pattern), page.get_by_text(pattern)]:
             try:
-                for i in range(min(locator.count(), 4)):
+                for i in range(min(locator.count(), 8)):
                     item = locator.nth(i)
                     if item.is_visible(timeout=500):
-                        item.click(timeout=2500)
-                        page.wait_for_timeout(800)
+                        item.click(timeout=3000)
+                        page.wait_for_timeout(900)
                         return True
             except Exception:
                 pass
@@ -125,7 +124,9 @@ def click_store_picker(page):
 
 
 def choose_store(page, store_name: str) -> bool:
-    city = STORES[store_name]["city"]
+    config = STORES[store_name]
+    city = config["city"]
+    aliases = config.get("aliases", [store_name, city])
     click_store_picker(page)
 
     # Search fields in the store dialog/header.
@@ -138,40 +139,60 @@ def choose_store(page, store_name: str) -> bool:
     for selector in search_selectors:
         try:
             inputs = page.locator(selector)
-            for i in range(min(inputs.count(), 3)):
+            for i in range(min(inputs.count(), 5)):
                 inp = inputs.nth(i)
                 if inp.is_visible(timeout=500):
                     inp.fill(city)
-                    page.wait_for_timeout(1000)
-                    break
-        except Exception:
-            pass
-
-    # Click the city/store result. Exact city matching avoids accidentally
-    # selecting Levanger/Steinkjer/etc. when Verdal is requested.
-    for name in [store_name, city]:
-        try:
-            loc = page.get_by_text(name, exact=True)
-            for i in range(min(loc.count(), 6)):
-                item = loc.nth(i)
-                if item.is_visible(timeout=500):
-                    item.click(timeout=2500)
                     page.wait_for_timeout(1200)
                     break
         except Exception:
             pass
 
-    # Some dialogs render the store name as part of a card instead of exact text.
-    if city.lower() not in visible_text(page).lower():
+    # Click the most specific store name first. XL-BYGG may display the full
+    # legal branch name, while the normal site name is simply 'XL-BYGG Skogn'.
+    clicked = False
+    for name in aliases + [store_name, city]:
+        try:
+            exact = page.get_by_text(name, exact=True)
+            for i in range(min(exact.count(), 10)):
+                item = exact.nth(i)
+                if item.is_visible(timeout=500):
+                    item.click(timeout=3000)
+                    page.wait_for_timeout(1800)
+                    clicked = True
+                    break
+            if clicked:
+                break
+        except Exception:
+            pass
+
+    # Some retailer dialogs put the store name inside a button/card rather
+    # than as an exact text node.
+    if not clicked:
+        for name in aliases:
+            try:
+                loc = page.get_by_role("button", name=re.compile(re.escape(name), re.I))
+                for i in range(min(loc.count(), 8)):
+                    item = loc.nth(i)
+                    if item.is_visible(timeout=500):
+                        item.click(timeout=3000)
+                        page.wait_for_timeout(1800)
+                        clicked = True
+                        break
+                if clicked:
+                    break
+            except Exception:
+                pass
+
+    if not clicked:
+        print(f"STORE SELECT FAILED {store_name}")
         return False
 
-    # Give the site time to update its selected-store state and price.
-    page.wait_for_timeout(1200)
-    text = visible_text(page)
-    low = text.lower()
-    # A remaining generic picker prompt means we did not actually select it.
-    prompts = low.count("velg butikk") + low.count("velg varehus")
-    return city.lower() in low and prompts < 2
+    # Do not reject a successful selection merely because the page still has a
+    # footer/header 'Velg butikk' prompt. The important signal is that the
+    # specific store was clicked and the page had time to refresh its price.
+    page.wait_for_timeout(1500)
+    return True
 
 
 def discover_links(page, category_url: str, dimension: str, kind: str):
@@ -213,6 +234,7 @@ def scrape_product(page, store_name, url, dimension, kind):
     if not choose_store(page, store_name):
         print(f"NO STORE {store_name}: {url}")
         return None
+    page.wait_for_timeout(1200)
     text = visible_text(page)
     if not dimension_matches(text[:18000], dimension):
         print(f"NO DIMENSION {dimension}: {url}")
