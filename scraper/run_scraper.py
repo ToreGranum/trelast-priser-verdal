@@ -4,7 +4,14 @@ from scraper import scrape_prices as scraper
 
 
 def number(s):
-    s = str(s).strip().replace(" ", "")
+    s = str(s).replace("\u00a0", " ").strip()
+    # Playwright kan hente norske desimaltall som to tekstnoder:
+    # "41" + "90" -> "41 90". Dette betyr 41,90, ikke 4190.
+    if re.fullmatch(r"\d{1,6}\s+\d{2}", s):
+        whole, cents = s.split()
+        return float(f"{whole}.{cents}")
+
+    s = s.replace(" ", "")
     if "," in s and "." in s:
         # Norsk format: 1.234,56
         if s.rfind(",") > s.rfind("."):
