@@ -58,12 +58,6 @@ def norm(s: str) -> str:
 
 
 def dimension_matches(text: str, dimension: str) -> bool:
-    """Match dimensions after normalising both the page text and target.
-
-    The previous implementation normalised the page text (removing the 'x')
-    but searched for an unnormalised target such as '48x98'. That made every
-    dimension check fail and caused valid product pages to be discarded.
-    """
     n = norm(text)
     a, b = dimension.lower().split("x")
     b_int = str(int(b))
@@ -71,16 +65,21 @@ def dimension_matches(text: str, dimension: str) -> bool:
     return any(norm(f"{a}x{candidate}") in n for candidate in candidates)
 
 
-def parse_price(text: str):
-    """Find a price explicitly expressed per running metre."""
+def parse_product_price(text: str):
+    """Return the concrete product price, preferably explicitly marked per stk/enhet.
+
+    We deliberately DO NOT parse /m, pr m, meter or løpemeter. The comparison is
+    now based on the actual product's selling price, normally per piece (stk).
+    """
     cleaned = re.sub(r"\s+", " ", text.replace("\u00a0", " ")).strip()
-    patterns = [
-        r"(?:kr\s*)?(\d{1,5})\s+(\d{2})\s*(?:per\s*m|/\s*m|pr\.?\s*m)\b",
-        r"(?:kr\s*)?(\d{1,5}(?:[.,]\d{2}))\s*(?:per\s*m|/\s*m|pr\.?\s*m)\b",
-        r"(?:kr\s*)?(\d{1,5})\s+(\d{2})\s*(?:kr\s*)?(?:per\s*)?meter\b",
-        r"(?:kr\s*)?(\d{1,5}(?:[.,]\d{2}))\s*(?:kr\s*)?(?:per\s*)?meter\b",
+
+    # First choice: a price explicitly expressed per piece/unit.
+    unit_patterns = [
+        r"(?:kr\s*)?(\d{1,5}(?:[.,]\d{1,2})?)\s*(?:kr\s*)?(?:/|per\s+|pr\.?\s+)?(?:stk|stykk|enhet)\b",
+        r"(?:kr\s*)?(\d{1,5})\s+(\d{2})\s*(?:kr\s*)?(?:/|per\s+|pr\.?\s+)?(?:stk|stykk|enhet)\b",
+        r"(?:pris|salgspris|nettpris)[^0-9]{0,30}(?:kr\s*)?(\d{1,5}(?:[.,]\d{1,2})?)\s*(?:kr)?",
     ]
-    for pattern in patterns:
+    for pattern in unit_patterns:
         match = re.search(pattern, cleaned, flags=re.I)
         if not match:
             continue
@@ -89,10 +88,30 @@ def parse_price(text: str):
         else:
             value = match.group(1).replace(" ", "").replace(",", ".")
         try:
-            return float(value)
+            price = float(value)
+            if price > 0:
+                return price, "stk"
         except ValueError:
             pass
-    return None
+
+    # Many product pages show the concrete price without a unit near the price.
+    # Use a short context window around price labels, but never accept /m or
+    # løpemeter prices as a fallback.
+    for label in ("salgspris", "nettpris", "pris"):
+        for match in re.finditer(label, cleaned, flags=re.I):
+            context = cleaned[match.start():match.start() + 180]
+            if re.search(r"(?:/\s*m|pr\.?\s*m\b|per\s*m\b|løpemeter|meter)", context, flags=re.I):
+                continue
+            price_match = re.search(r"(?:kr\s*)?(\d{1,5}(?:[.,]\d{1,2})?)\s*(?:kr)?", context, flags=re.I)
+            if price_match:
+                try:
+                    price = float(price_match.group(1).replace(",", "."))
+                    if price > 0:
+                        return price, "stk"
+                except ValueError:
+                    pass
+
+    return None, None
 
 
 def visible_text(page):
@@ -103,8 +122,6 @@ def visible_text(page):
 
 
 def click_store_picker(page):
-    # Prefer the exact picker label. A broad 'butikk'/'varehus' match can hit
-    # unrelated navigation elements and leave the actual picker unopened.
     patterns = [
         re.compile(r"^\s*Velg butikk\s*$", re.I),
         re.compile(r"^\s*Velg varehus\s*$", re.I),
@@ -129,7 +146,6 @@ def choose_store(page, store_name: str) -> bool:
     aliases = config.get("aliases", [store_name, city])
     click_store_picker(page)
 
-    # Search fields in the store dialog/header.
     search_selectors = [
         "input[placeholder*='Søk' i]",
         "input[placeholder*='butikk' i]",
@@ -148,8 +164,6 @@ def choose_store(page, store_name: str) -> bool:
         except Exception:
             pass
 
-    # Click the most specific store name first. XL-BYGG may display the full
-    # legal branch name, while the normal site name is simply 'XL-BYGG Skogn'.
     clicked = False
     for name in aliases + [store_name, city]:
         try:
@@ -166,8 +180,6 @@ def choose_store(page, store_name: str) -> bool:
         except Exception:
             pass
 
-    # Some retailer dialogs put the store name inside a button/card rather
-    # than as an exact text node.
     if not clicked:
         for name in aliases:
             try:
@@ -188,9 +200,6 @@ def choose_store(page, store_name: str) -> bool:
         print(f"STORE SELECT FAILED {store_name}")
         return False
 
-    # Do not reject a successful selection merely because the page still has a
-    # footer/header 'Velg butikk' prompt. The important signal is that the
-    # specific store was clicked and the page had time to refresh its price.
     page.wait_for_timeout(1500)
     return True
 
@@ -233,16 +242,16 @@ def scrape_product(page, store_name, url, dimension, kind):
     page.wait_for_timeout(1400)
     if not choose_store(page, store_name):
         print(f"NO STORE {store_name}: {url}")
-        return None
+        return None, None
     page.wait_for_timeout(1200)
     text = visible_text(page)
     if not dimension_matches(text[:18000], dimension):
         print(f"NO DIMENSION {dimension}: {url}")
-        return None
-    price = parse_price(text)
+        return None, None
+    price, unit = parse_product_price(text)
     if price is None:
-        print(f"NO PRICE {store_name} {dimension}: {url}")
-    return price
+        print(f"NO PRODUCT PRICE {store_name} {dimension}: {url}")
+    return price, unit
 
 
 def main():
@@ -258,17 +267,17 @@ def main():
             for kind, dimensions in TARGETS.items():
                 for dimension in dimensions:
                     key = (store_name, dimension, kind)
-                    previous = old_map.get(key, {})
                     urls = [u for s, u, d, k in KNOWN_PRODUCTS if s == store_name and d == dimension and k == kind]
                     if not urls:
                         urls = discover_links(page, config["categories"][kind], dimension, kind)
 
                     price = None
+                    unit = None
                     for url in urls:
                         try:
-                            price = scrape_product(page, store_name, url, dimension, kind)
+                            price, unit = scrape_product(page, store_name, url, dimension, kind)
                             if price is not None:
-                                print(f"OK {store_name} {dimension} {kind}: {price:.2f}")
+                                print(f"OK {store_name} {dimension} {kind}: {price:.2f} / {unit}")
                                 break
                         except Exception as exc:
                             print(f"WARN {store_name} {dimension} {kind}: {exc}")
@@ -278,15 +287,10 @@ def main():
                             "store": store_name,
                             "dimension": dimension,
                             "type": kind,
-                            "price_per_meter": price,
+                            "price_per_unit": price,
+                            "unit": unit or "stk",
                             "verified_local": True,
-                            "status": "Lokalpris bekreftet",
-                            "checked_at": datetime.now(timezone.utc).isoformat(),
-                        }
-                    elif previous.get("price_per_meter") is not None and previous.get("verified_local"):
-                        old_map[key] = {
-                            **previous,
-                            "status": "Siste bekreftede lokalpris – ny sjekk feilet",
+                            "status": "Konkret produktpris bekreftet",
                             "checked_at": datetime.now(timezone.utc).isoformat(),
                         }
                     else:
@@ -294,9 +298,10 @@ def main():
                             "store": store_name,
                             "dimension": dimension,
                             "type": kind,
-                            "price_per_meter": None,
+                            "price_per_unit": None,
+                            "unit": "stk",
                             "verified_local": False,
-                            "status": "Ingen bekreftet lokalpris",
+                            "status": "Ingen bekreftet produktpris",
                             "checked_at": datetime.now(timezone.utc).isoformat(),
                         }
 
