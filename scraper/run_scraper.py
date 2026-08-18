@@ -47,10 +47,9 @@ def robust_parse_product_price(text):
     unit_re = r"(stk|stykk|enhet|pcs|piece|pakke|pk|pack|m|meter|lm|løpemeter)"
     value_re = r"(\d{1,6}[.,]\d{2}|\d{1,6}\s+\d{2})"
 
-    # Ord som normalt betyr at beløpet ikke er den ordinære produktprisen.
     bad_re = re.compile(
-        r"(?:førpris|før pris|ord\. pris|ordinær pris|medlemspris|coop-medlem|medlemspris|sparer|spar|rabatt|fra)"
-        , re.I,
+        r"(?:førpris|før pris|ord\. pris|ordinær pris|medlemspris|coop-medlem|medlemspris|sparer|spar|rabatt|fra)",
+        re.I,
     )
 
     candidates = []
@@ -79,14 +78,11 @@ def robust_parse_product_price(text):
                 "distance": abs(match.start() - text.lower().find("salgspris")),
             })
 
-    # Et produkt kan vise både «83,90 per m» og «402,72 stk».
-    # Bruk stykk/pakke først fordi dette er den konkrete salgsprisen på varen.
     for wanted_unit in ("stk", "pakke", "m"):
         matching = [c for c in candidates if c["unit"] == wanted_unit]
         if matching:
             return matching[0]["price"], matching[0]["unit"]
 
-    # Fallback for sider som kun viser «Pris 123,45» uten enhet.
     for label in ("salgspris", "nettpris", "pris"):
         for match in re.finditer(label, text, flags=re.I):
             context = text[match.start():match.start() + 300]
@@ -109,6 +105,24 @@ def robust_parse_product_price(text):
 
 
 scraper.parse_product_price = robust_parse_product_price
+
+# Manglende dimensjoner som ikke alltid blir funnet fra kategorisidene.
+# Vi bruker konkrete produktsider slik at 48x148 og 48x198 blir hentet også
+# hos OBS og Bygger'n, både ubehandlet og impregnert.
+scraper.KNOWN_PRODUCTS.extend([
+    # OBS BYGG – ubehandlet
+    ("OBS BYGG Verdal", "https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/ubehandlet-konstruksjonsvirke/3019166", "48x148", "ubh"),
+    ("OBS BYGG Verdal", "https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/ubehandlet-konstruksjonsvirke/3019328", "48x198", "ubh"),
+    # OBS BYGG – impregnert
+    ("OBS BYGG Verdal", "https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/impregnert-konstruksjonsvirke-----0-2514104-2291725/3003403", "48x148", "imp"),
+    ("OBS BYGG Verdal", "https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/impregnert-konstruksjonsvirke-----0-2514104-2291725/3003423", "48x198", "imp"),
+    # Bygger'n – ubehandlet
+    ("Bygger'n Verdal", "https://www.byggern.no/product/54236866", "48x148", "ubh"),
+    ("Bygger'n Verdal", "https://www.byggern.no/product/54237025", "48x198", "ubh"),
+    # Bygger'n – impregnert
+    ("Bygger'n Verdal", "https://www.byggern.no/product/54177506", "48x148", "imp"),
+    ("Bygger'n Verdal", "https://www.byggern.no/product/54177525", "48x198", "imp"),
+])
 
 
 def _click_xl_store(page):
@@ -227,8 +241,6 @@ def robust_scrape_product(page, store_name, url, dimension, kind):
 
     price, unit = robust_parse_product_price(text)
     if price is None:
-        # JSON-LD brukes kun som siste fallback. Vi overskriver ikke en eksplisitt
-        # «per stk/pakke»-pris som allerede står synlig på siden.
         price, unit = scraper.jsonld_price(page)
 
     if price is None:
