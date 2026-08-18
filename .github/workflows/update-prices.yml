@@ -19,7 +19,7 @@ jobs:
   scrape:
     if: github.event_name != 'push' || github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Hent kode
         uses: actions/checkout@v4
