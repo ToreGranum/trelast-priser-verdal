@@ -59,7 +59,6 @@ def robust_parse_product_price(text):
             if price is not None and 0 < price < 100000:
                 return price, unit_name(unit)
 
-    # Mange nettbutikker viser først bare «Pris» og deretter beløpet.
     for label in ("salgspris", "nettpris", "pris"):
         for match in re.finditer(label, text, flags=re.I):
             context = text[match.start():match.start() + 260]
@@ -79,16 +78,14 @@ def robust_parse_product_price(text):
     return None, None
 
 
-# Bruk samme robuste talltolking som tidligere versjon.
 scraper.parse_product_price = robust_parse_product_price
 
 
 def _click_xl_store(page):
-    """Velg XL-BYGG Skogn selv om varehusdialogen har en annen DOM enn OBS/Bygger'n."""
-    if "XL-BYGG" not in str(page.url):
+    """Velg XL-BYGG Skogn selv om varehusdialogen har en annen DOM."""
+    if "xl-bygg.no" not in str(page.url).lower():
         return False
 
-    # Åpne varehusvelgeren.
     patterns = [
         re.compile(r"^\s*Velg varehus\s*$", re.I),
         re.compile(r"Velg varehus", re.I),
@@ -117,7 +114,6 @@ def _click_xl_store(page):
     if not opened:
         return False
 
-    # Søkefeltet varierer mellom produksjons- og stagingversjonen.
     for selector in (
         "input[placeholder*='Søk' i]",
         "input[placeholder*='butikk' i]",
@@ -136,7 +132,6 @@ def _click_xl_store(page):
         except Exception:
             pass
 
-    # Prøv hele raden/knappen først. Deretter en eksplisitt «Velg»-knapp i raden.
     store_re = re.compile(r"(?:XL-BYGG\s*)?(?:Gunnar\s*T\.\s*Strøm.*)?Skogn", re.I)
     candidates = [
         page.get_by_text(store_re),
@@ -148,7 +143,6 @@ def _click_xl_store(page):
                 item = locator.nth(i)
                 if not item.is_visible(timeout=250):
                     continue
-                # Hvis dette er en container, klikk på nærmeste knapp inni den.
                 try:
                     button = item.locator("xpath=ancestor::*[self::li or @role='option' or self::div][1]//button").first
                     if button.count() and button.is_visible(timeout=200):
@@ -162,7 +156,6 @@ def _click_xl_store(page):
         except Exception:
             pass
 
-    # Noen versjoner viser bare «Skogn» som tekst og flere «Velg»-knapper.
     try:
         rows = page.locator("li, [role='option'], tr, .store, .warehouse, [class*='store' i]").filter(has_text=re.compile(r"Skogn", re.I))
         for i in range(min(rows.count(), 10)):
@@ -189,14 +182,12 @@ def robust_scrape_product(page, store_name, url, dimension, kind):
     if store_name == "XL-BYGG Skogn":
         selected = _click_xl_store(page)
 
-    # Bruk også den generelle butikkvelgeren for kjedene som støtter den.
     if not selected:
         try:
             selected = scraper.choose_store(page, store_name)
         except Exception as exc:
             print(f"STORE PICKER ERROR {store_name}: {exc}")
 
-    # XL-BYGG kan laste pris/lager asynkront etter butikkvalg.
     page.wait_for_timeout(2500 if store_name == "XL-BYGG Skogn" else 1200)
     text = scraper.visible_text(page)
 
@@ -208,7 +199,6 @@ def robust_scrape_product(page, store_name, url, dimension, kind):
     if price is None:
         price, unit = scraper.jsonld_price(page)
 
-    # Fallback: pris kan ligge i aria-label/title eller skjult i en produkt-widget.
     if price is None:
         try:
             attrs = page.locator("[aria-label], [title]").evaluate_all(
