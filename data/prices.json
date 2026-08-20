@@ -1,15 +1,15 @@
 {
-  "updated_at": "2026-08-20T08:29:02.660127+00:00",
+  "updated_at": "2026-08-20T10:18:24.318711+00:00",
   "items": [
     {
       "store": "OBS BYGG Verdal",
       "dimension": "48x98",
       "type": "ubh",
-      "price_per_unit": 301.92,
+      "price_per_unit": 439.0,
       "unit": "stk",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:07:09.795702+00:00"
+      "checked_at": "2026-08-20T09:56:12.788612+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -19,7 +19,7 @@
       "unit": "m",
       "verified_local": false,
       "status": "Sist kjente produktpris – ny kontroll feilet",
-      "checked_at": "2026-08-20T08:18:49.624963+00:00"
+      "checked_at": "2026-08-20T10:08:04.726225+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -29,7 +29,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:27:52.432137+00:00"
+      "checked_at": "2026-08-20T10:17:13.580518+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -39,7 +39,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:07:46.546791+00:00"
+      "checked_at": "2026-08-20T09:56:49.681209+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -49,7 +49,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:19:24.352940+00:00"
+      "checked_at": "2026-08-20T10:08:39.747210+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -59,7 +59,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:27:56.819003+00:00"
+      "checked_at": "2026-08-20T10:17:18.000421+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -69,7 +69,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:08:23.134257+00:00"
+      "checked_at": "2026-08-20T09:57:26.531576+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -79,7 +79,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:19:59.036239+00:00"
+      "checked_at": "2026-08-20T10:09:14.726641+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -89,7 +89,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:28:01.207518+00:00"
+      "checked_at": "2026-08-20T10:17:22.416265+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -99,7 +99,7 @@
       "unit": "m",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:11:16.565043+00:00"
+      "checked_at": "2026-08-20T10:00:22.484028+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -109,7 +109,7 @@
       "unit": "m",
       "verified_local": false,
       "status": "Sist kjente produktpris – ny kontroll feilet",
-      "checked_at": "2026-08-20T08:22:41.891318+00:00"
+      "checked_at": "2026-08-20T10:11:59.049916+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -119,7 +119,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:28:18.755323+00:00"
+      "checked_at": "2026-08-20T10:17:40.095465+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -129,7 +129,7 @@
       "unit": "m",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:11:53.155917+00:00"
+      "checked_at": "2026-08-20T10:00:59.423328+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -139,7 +139,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:23:16.550593+00:00"
+      "checked_at": "2026-08-20T10:12:34.063007+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -149,7 +149,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:28:23.142451+00:00"
+      "checked_at": "2026-08-20T10:17:44.500757+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -159,7 +159,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:12:29.811773+00:00"
+      "checked_at": "2026-08-20T10:01:36.252358+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -169,7 +169,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:23:51.243326+00:00"
+      "checked_at": "2026-08-20T10:13:09.091720+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -179,7 +179,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:28:27.525299+00:00"
+      "checked_at": "2026-08-20T10:17:48.965465+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -189,7 +189,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:09:08.478789+00:00"
+      "checked_at": "2026-08-20T09:58:12.701567+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -199,7 +199,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:20:41.668594+00:00"
+      "checked_at": "2026-08-20T10:09:57.920215+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -209,7 +209,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:28:05.596556+00:00"
+      "checked_at": "2026-08-20T10:17:26.844639+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -219,7 +219,7 @@
       "unit": "m",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:09:53.841023+00:00"
+      "checked_at": "2026-08-20T09:58:58.813703+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -229,7 +229,7 @@
       "unit": "m",
       "verified_local": false,
       "status": "Sist kjente produktpris – ny kontroll feilet",
-      "checked_at": "2026-08-20T08:21:24.166611+00:00"
+      "checked_at": "2026-08-20T10:10:40.936783+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -239,17 +239,17 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:28:09.991294+00:00"
+      "checked_at": "2026-08-20T10:17:31.270225+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
       "dimension": "36x048",
       "type": "ubh",
-      "price_per_unit": 301.92,
+      "price_per_unit": 439.0,
       "unit": "stk",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:10:39.928237+00:00"
+      "checked_at": "2026-08-20T09:59:45.614944+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -259,7 +259,7 @@
       "unit": "m",
       "verified_local": false,
       "status": "Sist kjente produktpris – ny kontroll feilet",
-      "checked_at": "2026-08-20T08:22:07.170020+00:00"
+      "checked_at": "2026-08-20T10:11:24.051633+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -269,7 +269,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:28:14.373083+00:00"
+      "checked_at": "2026-08-20T10:17:35.683466+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -279,7 +279,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:13:15.030876+00:00"
+      "checked_at": "2026-08-20T10:02:22.285970+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -289,7 +289,7 @@
       "unit": "m",
       "verified_local": false,
       "status": "Sist kjente produktpris – ny kontroll feilet",
-      "checked_at": "2026-08-20T08:25:08.584447+00:00"
+      "checked_at": "2026-08-20T10:14:27.331106+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -299,7 +299,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:28:31.913955+00:00"
+      "checked_at": "2026-08-20T10:17:53.375844+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -309,7 +309,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:14:00.238212+00:00"
+      "checked_at": "2026-08-20T10:03:08.326371+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -319,7 +319,7 @@
       "unit": "m",
       "verified_local": false,
       "status": "Sist kjente produktpris – ny kontroll feilet",
-      "checked_at": "2026-08-20T08:26:25.761169+00:00"
+      "checked_at": "2026-08-20T10:15:45.580976+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -329,77 +329,77 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:28:36.327458+00:00"
+      "checked_at": "2026-08-20T10:17:57.791605+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
       "dimension": "36x048",
       "type": "imp",
-      "price_per_unit": 301.92,
-      "unit": "stk",
-      "verified_local": false,
-      "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:14:45.402036+00:00"
-    },
-    {
-      "store": "Bygger'n Verdal",
-      "dimension": "36x048",
-      "type": "imp",
-      "price_per_unit": 16.9,
-      "unit": "m",
-      "verified_local": false,
-      "status": "Sist kjente produktpris – ny kontroll feilet",
-      "checked_at": "2026-08-20T08:27:08.246157+00:00"
-    },
-    {
-      "store": "XL-BYGG Skogn",
-      "dimension": "36x048",
-      "type": "imp",
-      "price_per_unit": null,
-      "unit": "stk",
-      "verified_local": false,
-      "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:28:40.706912+00:00"
-    },
-    {
-      "store": "OBS BYGG Verdal",
-      "dimension": "16x098",
-      "type": "grunnet",
       "price_per_unit": 439.0,
       "unit": "stk",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:15:30.819953+00:00"
+      "checked_at": "2026-08-20T10:03:57.560106+00:00"
     },
     {
       "store": "Bygger'n Verdal",
-      "dimension": "16x098",
-      "type": "grunnet",
-      "price_per_unit": null,
-      "unit": "stk",
+      "dimension": "36x048",
+      "type": "imp",
+      "price_per_unit": 16.9,
+      "unit": "m",
       "verified_local": false,
-      "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:27:16.029662+00:00"
+      "status": "Sist kjente produktpris – ny kontroll feilet",
+      "checked_at": "2026-08-20T10:16:28.704655+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
-      "dimension": "16x098",
-      "type": "grunnet",
+      "dimension": "36x048",
+      "type": "imp",
       "price_per_unit": null,
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:28:45.090712+00:00"
+      "checked_at": "2026-08-20T10:18:02.200463+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
-      "dimension": "19x098",
+      "dimension": "16x098",
       "type": "grunnet",
       "price_per_unit": 301.92,
       "unit": "stk",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:16:16.107840+00:00"
+      "checked_at": "2026-08-20T10:04:43.650239+00:00"
+    },
+    {
+      "store": "Bygger'n Verdal",
+      "dimension": "16x098",
+      "type": "grunnet",
+      "price_per_unit": null,
+      "unit": "stk",
+      "verified_local": false,
+      "status": "Ingen bekreftet produktpris",
+      "checked_at": "2026-08-20T10:16:36.756742+00:00"
+    },
+    {
+      "store": "XL-BYGG Skogn",
+      "dimension": "16x098",
+      "type": "grunnet",
+      "price_per_unit": null,
+      "unit": "stk",
+      "verified_local": false,
+      "status": "Ingen bekreftet produktpris",
+      "checked_at": "2026-08-20T10:18:06.604702+00:00"
+    },
+    {
+      "store": "OBS BYGG Verdal",
+      "dimension": "19x098",
+      "type": "grunnet",
+      "price_per_unit": 301.92,
+      "unit": "stk",
+      "verified_local": false,
+      "status": "Konkret produktpris bekreftet på produktsiden",
+      "checked_at": "2026-08-20T10:05:29.796270+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -409,7 +409,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:27:24.316566+00:00"
+      "checked_at": "2026-08-20T10:16:44.805334+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -419,7 +419,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:28:49.473776+00:00"
+      "checked_at": "2026-08-20T10:18:11.027786+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
@@ -429,7 +429,7 @@
       "unit": "m",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:16:52.667672+00:00"
+      "checked_at": "2026-08-20T10:06:06.541615+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -439,7 +439,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:27:32.267389+00:00"
+      "checked_at": "2026-08-20T10:16:52.849158+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -449,17 +449,17 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:28:53.860733+00:00"
+      "checked_at": "2026-08-20T10:18:15.442564+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
       "dimension": "22x173",
       "type": "grunnet",
-      "price_per_unit": 439.0,
+      "price_per_unit": 301.92,
       "unit": "stk",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:17:38.003756+00:00"
+      "checked_at": "2026-08-20T10:06:52.554195+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -469,7 +469,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:27:40.035886+00:00"
+      "checked_at": "2026-08-20T10:17:00.883828+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -479,17 +479,17 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:28:58.240602+00:00"
+      "checked_at": "2026-08-20T10:18:19.873106+00:00"
     },
     {
       "store": "OBS BYGG Verdal",
       "dimension": "22x198",
       "type": "grunnet",
-      "price_per_unit": 439.0,
+      "price_per_unit": 301.92,
       "unit": "stk",
       "verified_local": false,
       "status": "Konkret produktpris bekreftet på produktsiden",
-      "checked_at": "2026-08-20T08:18:14.760733+00:00"
+      "checked_at": "2026-08-20T10:07:29.357824+00:00"
     },
     {
       "store": "Bygger'n Verdal",
@@ -499,7 +499,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:27:47.837800+00:00"
+      "checked_at": "2026-08-20T10:17:08.922267+00:00"
     },
     {
       "store": "XL-BYGG Skogn",
@@ -509,7 +509,7 @@
       "unit": "stk",
       "verified_local": false,
       "status": "Ingen bekreftet produktpris",
-      "checked_at": "2026-08-20T08:29:02.623841+00:00"
+      "checked_at": "2026-08-20T10:18:24.280593+00:00"
     }
   ]
 }
