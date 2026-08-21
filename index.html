@@ -2,132 +2,27 @@
 <html lang="no">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Trelastpriser Verdal</title>
+<title>Trelastpriser – Verdal og Skogn</title>
 <style>
-body{margin:0;background:#f4f6f8;color:#16211b;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-header{background:linear-gradient(135deg,#10251b,#237247);color:#fff;padding:42px 20px 75px}
-.wrap{max-width:1100px;margin:auto}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:12px;opacity:.75}
-h1{font-size:clamp(36px,6vw,58px);margin:10px 0}header p{max-width:760px;color:#d9e9df}
-.panel{max-width:1100px;margin:-40px auto 30px;padding:22px;background:#fff;border-radius:20px;box-shadow:0 12px 35px #14261b14}
-.controls{display:grid;grid-template-columns:1fr 1fr 160px;gap:14px}
-label{display:block;font-size:12px;font-weight:800;color:#69746e;margin-bottom:7px}
-select,input{width:100%;padding:13px;border:1px solid #e2e8e4;border-radius:11px;background:#fff;font-size:15px;box-sizing:border-box}
-.top{display:flex;justify-content:space-between;align-items:end;margin:28px 0 16px}.top h2{margin:0}.updated{font-size:12px;color:#69746e}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.card{border:1px solid #e2e8e4;border-radius:17px;padding:20px}.best{border:2px solid #17633d}
-.store{font-weight:800;font-size:16px;margin-bottom:17px}.price{font-size:32px;font-weight:900}.price-link{color:inherit;text-decoration:none}.price-link:hover{text-decoration:underline}.unit{font-size:14px;color:#69746e}.status{margin-top:12px;font-size:12px;color:#69746e}.product-link{display:inline-block;margin-top:13px;color:#17633d;font-size:12px;font-weight:800;text-decoration:none}.product-link:hover{text-decoration:underline}
-.badge{display:inline-block;background:#e9f5ee;color:#17633d;padding:5px 8px;border-radius:99px;font-size:10px;font-weight:900;margin-bottom:12px}.example{background:#fff4d8;color:#8a5b00}
-.total{margin-top:20px;background:#14221b;color:#fff;border-radius:17px;padding:19px;display:flex;justify-content:space-between}.total small{color:#bdcfc4}.total strong{font-size:28px}
-.note{margin-top:18px;font-size:12px;color:#69746e}.count{font-size:12px;color:#69746e;margin-bottom:12px}
-@media(max-width:760px){.controls,.grid{grid-template-columns:1fr}.top{display:block}.total{display:block}.total strong{display:block;margin-top:8px}}
+:root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#142019;background:#f4f7f5}*{box-sizing:border-box}body{margin:0}.hero{background:linear-gradient(135deg,#10251b,#1f7048);color:white;padding:42px 20px 78px}.wrap{max-width:1120px;margin:auto}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:11px;opacity:.75}h1{font-size:clamp(38px,6vw,64px);line-height:1;margin:12px 0}.hero p{max-width:760px;color:#dcebe2}.panel{max-width:1120px;margin:-42px auto 40px;background:white;border-radius:22px;padding:24px;box-shadow:0 18px 45px #10251b18}.controls{display:grid;grid-template-columns:1fr 1fr 150px;gap:14px}label{display:block;font-size:11px;font-weight:800;letter-spacing:.05em;color:#66736c;margin-bottom:7px}select,input{width:100%;border:1px solid #dfe7e2;border-radius:12px;padding:13px;background:#fff;font-size:15px}.top{display:flex;justify-content:space-between;align-items:end;margin:28px 0 15px}.top h2{margin:0;font-size:22px}.updated{font-size:12px;color:#6b7771}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{border:1px solid #e1e8e3;border-radius:18px;padding:20px;min-height:170px}.card.best{border:2px solid #197348}.store{font-weight:800;font-size:16px;margin:8px 0 18px}.price{font-size:31px;font-weight:900}.unit{font-size:13px;color:#6b7771;font-weight:600}.status{font-size:12px;color:#68746e;margin-top:12px}.badge{display:inline-block;background:#e9f5ee;color:#17633d;border-radius:99px;padding:5px 8px;font-size:10px;font-weight:900}.empty{padding:22px;border:1px dashed #ccd8d1;border-radius:16px;color:#68746e}.total{margin-top:18px;border-radius:18px;background:#14221b;color:#fff;padding:20px;display:flex;justify-content:space-between;align-items:center}.total small{color:#bdcfc4}.total strong{font-size:28px}.note{margin-top:18px;font-size:12px;color:#68746e;line-height:1.5}@media(max-width:760px){.controls,.grid{grid-template-columns:1fr}.top{display:block}.updated{margin-top:6px}.total{display:block}.total strong{display:block;margin-top:8px}}
 </style>
 </head>
 <body>
-<header><div class="wrap"><div class="eyebrow">Verdal · automatisk prissjekk</div><h1>Trelastpriser</h1><p>Sammenlign pris på det konkrete trelastproduktet hos OBS BYGG Verdal, Bygger'n Verdal og XL-BYGG Skogn. Original salgsenhet beholdes – for eksempel stk, pakke eller m.</p></div></header>
+<header class="hero"><div class="wrap"><div class="eyebrow">Verdal · Skogn · butikkspesifikke priser</div><h1>Trelastpriser</h1><p>Sammenlign <strong>pris per løpemeter</strong> hos OBS BYGG Verdal, Bygger'n Verdal og XL-BYGG Skogn. Vi viser bare priser som scraperen faktisk har bekreftet for riktig butikk.</p></div></header>
 <main class="panel">
-<div class="controls">
-  <div><label>TYPE</label><select id="type"><option value="ubh">Ubehandlet C24</option><option value="imp">Impregnert C24</option><option value="grunnet">Grunnet</option></select></div>
-  <div><label>DIMENSJON</label><select id="dim"></select></div>
-  <div><label>ANTALL</label><input id="quantity" type="number" min="1" value="1"></div>
-</div>
-<div class="top"><h2 id="heading"></h2><div class="updated" id="updated">Laster prisdata…</div></div>
-<div class="count" id="count"></div><div class="grid" id="cards"></div>
-<div class="total"><div><small>Billigste bekreftede produktpris når enheten er lik</small><div id="qty"></div></div><strong id="total">–</strong></div>
-<div class="note">Prisen hentes fra det konkrete produktet slik butikken oppgir den. Klikk på «Se produkt» for å åpne varen direkte hos butikken. Vi konverterer ikke pris/m til stk.</div>
+<div class="controls"><div><label>TYPE</label><select id="type"><option value="ubh">Ubehandlet C24</option><option value="imp">Impregnert C24</option><option value="grunnet">Grunnet</option></select></div><div><label>DIMENSJON</label><select id="dim"></select></div><div><label>METER</label><input id="quantity" type="number" min="1" value="1"></div></div>
+<div class="top"><h2 id="heading"></h2><div class="updated" id="updated">Laster…</div></div>
+<div class="grid" id="cards"></div>
+<div class="total"><div><small>Billigste bekreftede butikkpris</small><div id="qty">–</div></div><strong id="total">–</strong></div>
+<div class="note">Prisene er per meter. En stykkpris fra en produktside brukes ikke som meterpris. Hvis riktig lokal butikk ikke kan bekreftes, vises ingen pris i stedet for en usikker pris.</div>
 </main>
 <script>
-const dimensions={
-  ubh:['48x98','48x148','48x198','23x048','30x048','36x048'],
-  imp:['48x98','48x148','48x198','23x048','30x048','36x048'],
-  grunnet:['16x098','19x098','19x148','22x173','22x198']
-};
-
-// Konkrete produktsider som brukes av scraperen. Lenken følger dermed
-// samme butikk + dimensjon + type som prisen gjelder for.
-const productLinks={
-  'OBS BYGG Verdal':{
-    'ubh':{
-      '48x98':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/ubehandlet-konstruksjonsvirke/3019536',
-      '48x148':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/ubehandlet-konstruksjonsvirke/3019166',
-      '48x198':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/ubehandlet-konstruksjonsvirke/3019328'
-    },
-    'imp':{
-      '48x98':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/impregnert-konstruksjonsvirke-----0-2514104-2291725/3003426',
-      '48x148':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/impregnert-konstruksjonsvirke-----0-2514104-2291725/3003403',
-      '48x198':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/impregnert-konstruksjonsvirke-----0-2514104-2291725/3003423'
-    },
-    'grunnet':{
-      '19x148':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/utvendig-kledning/2167152',
-      '22x198':'https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/utvendig-kledning/2242753'
-    }
-  },
-  "Bygger'n Verdal":{
-    'ubh':{
-      '48x98':'https://www.byggern.no/product/54313798',
-      '48x148':'https://www.byggern.no/product/54236866',
-      '48x198':'https://www.byggern.no/product/54237025'
-    },
-    'imp':{
-      '48x98':'https://www.byggern.no/product/54230960',
-      '48x148':'https://www.byggern.no/product/54177506',
-      '48x198':'https://www.byggern.no/product/54177525'
-    }
-  },
-  'XL-BYGG Skogn':{
-    'ubh':{
-      '48x98':'https://www.xl-bygg.no/product/moelven-gran-48x098-k-virke-c24-500357616',
-      '48x148':'https://www.xl-bygg.no/product/moelven-gran-48x148-k-virke-c24-500557012',
-      '48x198':'https://www.xl-bygg.no/product/hasas-gran-48x198-k-virke-c24-500501502',
-      '23x048':'https://www.xl-bygg.no/product/moelven-g-f-23x048-lekt-kl1-buntet-54230241',
-      '30x048':'https://www.xl-bygg.no/product/moelven-g-f-30x048-lekt-kl1-500563976',
-      '36x048':'https://www.xl-bygg.no/product/moelven-g-f-36x048-lekt-kl1-500520486'
-    },
-    'imp':{
-      '48x98':'https://www.xl-bygg.no/product/bergene-holm-furu-48x098-cuimp-k-virke-c24-54186194',
-      '48x148':'https://www.xl-bygg.no/product/hasas-furu-48x148-cuimp-k-virke-c24-54173677',
-      '48x198':'https://www.xl-bygg.no/product/hasas-furu-48x198-cuimp-k-virke-c24-54173696',
-      '23x048':'https://www.xl-bygg.no/product/bergene-holm-g-f-23x048-lekt-kl1-bnt-500442927',
-      '30x048':'https://www.xl-bygg.no/product/g3-gausdal-treindustrier-furu-30x048-lekt-kl1-cuimp-500437566',
-      '36x048':'https://www.xl-bygg.no/product/moelven-furu-36x048-lekt-kl1-cuimp-500533465'
-    },
-    'grunnet':{
-      '16x098':'https://www.xl-bygg.no/product/eggedal-sag-gran-16x098-rekt-kled-grunnet-60647936',
-      '19x098':'https://www.xl-bygg.no/product/eggedal-sag-gran-19x098-rekt-kled-grunnet-60648396',
-      '19x148':'https://www.xl-bygg.no/product/eggedal-sag-gran-19x148-rekt-kled-grunnet-60648398',
-      '22x173':'https://www.xl-bygg.no/product/moelven-gran-22x173-rektkled-bas-43236234',
-      '22x198':'https://www.xl-bygg.no/product/eggedal-sag-gran-22x198-rekt-kled-grunnet-60648406'
-    }
-  }
-};
-
-const type=document.querySelector('#type'),dim=document.querySelector('#dim'),quantity=document.querySelector('#quantity');
-let data={};
-function populateDimensions(){
-  const current=dim.value;
-  dim.innerHTML='';
-  (dimensions[type.value]||[]).forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d.replace('x',' × ')+' mm';dim.appendChild(o)});
-  if((dimensions[type.value]||[]).includes(current)) dim.value=current;
-}
-function label(t){return t==='ubh'?'Ubehandlet C24':t==='imp'?'Impregnert C24':'Grunnet'}
-function productUrl(row){return row.url||productLinks[row.store]?.[row.type]?.[row.dimension]||null}
-async function load(){try{data=await fetch('data/prices.json?'+Date.now()).then(r=>r.json());render()}catch(e){document.querySelector('#updated').textContent='Prisdata kunne ikke lastes'}}
-function render(){
-  const d=dim.value,t=type.value,q=Math.max(1,+quantity.value||1);
-  const rows=(data.items||[]).filter(x=>x.dimension===d&&x.type===t&&x.price_per_unit!=null);
-  document.querySelector('#heading').textContent=d.replace('x',' × ')+' mm · '+label(t);
-  document.querySelector('#updated').textContent=data.updated_at?'Sist oppdatert: '+new Date(data.updated_at).toLocaleString('nb-NO'):'Ingen oppdatering registrert';
-  document.querySelector('#count').textContent=rows.length+' konkrete produktpriser tilgjengelig';
-  if(!rows.length){document.querySelector('#cards').innerHTML='<p>Ingen konkret produktpris tilgjengelig ennå for denne dimensjonen og typen.</p>';document.querySelector('#qty').textContent='';document.querySelector('#total').textContent='–';return}
-  const confirmed=rows.filter(r=>r.verified_local),units=[...new Set(confirmed.map(r=>r.unit||'stk'))],comparable=units.length===1,best=comparable&&confirmed.length?Math.min(...confirmed.map(r=>r.price_per_unit)):null;
-  document.querySelector('#cards').innerHTML=rows.map(x=>{
-    const isBest=best!==null&&x.verified_local&&x.price_per_unit===best,unit=x.unit||'stk',url=productUrl(x);
-    return `<article class="card ${isBest?'best':''}">${isBest?'<div class="badge">BILLIGST</div>':x.verified_local?'':'<div class="badge example">IKKE LOKALT BEKREFTET</div>'}<div class="store">${x.store}</div><a class="price-link" href="${url||'#'}" target="_blank" rel="noopener noreferrer" ${url?'':'onclick="return false"'}><div class="price">kr ${x.price_per_unit.toLocaleString('nb-NO',{minimumFractionDigits:2})} <span class="unit">/ ${unit}</span></div></a><div class="status">${x.status||'Konkret produktpris bekreftet'}</div>${url?`<a class="product-link" href="${url}" target="_blank" rel="noopener noreferrer">↗ Se produkt hos ${x.store}</a>`:''}</article>`
-  }).join('');
-  document.querySelector('#qty').textContent=comparable?q+' '+units[0]:'';
-  document.querySelector('#total').textContent=best===null?'–':'kr '+(best*q).toLocaleString('nb-NO',{minimumFractionDigits:2});
-}
-type.addEventListener('change',()=>{populateDimensions();render()});
-dim.addEventListener('input',render);quantity.addEventListener('input',render);
-populateDimensions();load();setInterval(load,300000);
+const dimensions={ubh:['48x98','48x148','48x198','23x048','30x048','36x048'],imp:['48x98','48x148','48x198','23x048','30x048','36x048'],grunnet:['16x098','19x098','19x148','22x173','22x198']};
+const type=document.querySelector('#type'),dim=document.querySelector('#dim'),quantity=document.querySelector('#quantity');let data={};
+function populate(){const old=dim.value;dim.innerHTML='';(dimensions[type.value]||[]).forEach(d=>{let o=document.createElement('option');o.value=d;o.textContent=d.replace('x',' × ')+' mm';dim.appendChild(o)});if((dimensions[type.value]||[]).includes(old))dim.value=old}
+function typeName(t){return t==='ubh'?'Ubehandlet C24':t==='imp'?'Impregnert C24':'Grunnet'}
+async function load(){try{data=await fetch('data/prices.json?'+Date.now()).then(r=>r.json());render()}catch(e){document.querySelector('#updated').textContent='Kunne ikke laste prisdata'}}
+function render(){const d=dim.value,t=type.value,q=Math.max(1,+quantity.value||1);const rows=(data.items||[]).filter(x=>x.dimension===d&&x.type===t&&x.verified_local&&x.price_per_meter!=null);document.querySelector('#heading').textContent=d.replace('x',' × ')+' mm · '+typeName(t);document.querySelector('#updated').textContent=data.updated_at?'Sist oppdatert: '+new Date(data.updated_at).toLocaleString('nb-NO'):'Ingen oppdatering';if(!rows.length){document.querySelector('#cards').innerHTML='<div class="empty">Ingen butikkpris er bekreftet for dette valget ennå. Det er bedre enn å vise en feil pris.</div>';document.querySelector('#qty').textContent='Ingen bekreftede priser';document.querySelector('#total').textContent='–';return}const best=Math.min(...rows.map(x=>x.price_per_meter));document.querySelector('#cards').innerHTML=rows.map(x=>`<article class="card ${x.price_per_meter===best?'best':''}">${x.price_per_meter===best?'<span class="badge">BILLIGST</span>':''}<div class="store">${x.store}</div><div class="price">kr ${x.price_per_meter.toLocaleString('nb-NO',{minimumFractionDigits:2,maximumFractionDigits:2})} <span class="unit">/ m</span></div><div class="status">${x.status||'Lokalpris bekreftet'}</div></article>`).join('');document.querySelector('#qty').textContent=q+' meter';document.querySelector('#total').textContent='kr '+(best*q).toLocaleString('nb-NO',{minimumFractionDigits:2,maximumFractionDigits:2})}
+type.addEventListener('change',()=>{populate();render()});dim.addEventListener('input',render);quantity.addEventListener('input',render);populate();load();setInterval(load,300000);
 </script>
-</body>
-</html>
+</body></html>
