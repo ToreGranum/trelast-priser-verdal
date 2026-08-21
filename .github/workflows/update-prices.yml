@@ -10,7 +10,6 @@ on:
 permissions:
   contents: write
 
-# Unngå at to prisjobber prøver å skrive til main samtidig.
 concurrency:
   group: trelast-priser
   cancel-in-progress: false
@@ -38,8 +37,11 @@ jobs:
       - name: Installer Chromium
         run: python -m playwright install --with-deps chromium
 
-      - name: Kjør robust butikkspesifikk scraper
+      - name: Kjør butikkspesifikk scraper
         run: python -m scraper.run_scraper
+
+      - name: Fjern ubekreftede butikkpriser
+        run: python scraper/normalize_prices.py
 
       - name: Lagre oppdaterte priser
         run: |
@@ -51,10 +53,7 @@ jobs:
             echo "Ingen prisendringer å lagre."
             exit 0
           fi
-          git commit -m "Oppdater trelastpriser"
-
-          # En annen kjøring kan ha skrevet til main mens scraperen kjørte.
-          # Hent siste main og legg vår priscommit oppå før push.
+          git commit -m "Oppdater butikkbekreftede trelastpriser"
           for attempt in 1 2 3; do
             git fetch origin main
             git rebase origin/main && git push origin HEAD:main && exit 0
