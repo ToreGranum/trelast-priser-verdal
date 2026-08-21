@@ -35,30 +35,17 @@ def unit_name(u):
 
 
 def robust_parse_product_price(text):
-    """Finn den faktiske salgsprisen på produktsiden.
-
-    Viktig: Når siden viser både pris per meter og pris per stykk/pakke,
-    prioriterer vi stykk/pakke. Vi konverterer aldri m -> stk og bruker ikke
-    kundens antall for å lage en produktpris.
-    """
     text = text.replace("\u00a0", " ")
     text = re.sub(r"\s+", " ", text).strip()
-
     unit_re = r"(stk|stykk|enhet|pcs|piece|pakke|pk|pack|m|meter|lm|løpemeter)"
     value_re = r"(\d{1,6}[.,]\d{2}|\d{1,6}\s+\d{2})"
-
-    bad_re = re.compile(
-        r"(?:førpris|før pris|ord\. pris|ordinær pris|medlemspris|coop-medlem|medlemspris|sparer|spar|rabatt|fra)",
-        re.I,
-    )
-
+    bad_re = re.compile(r"(?:førpris|før pris|ord\. pris|ordinær pris|medlemspris|coop-medlem|sparer|spar|rabatt|fra)", re.I)
     candidates = []
     patterns = [
         rf"(?:kr\s*)?{value_re}\s*(?:kr\s*)?(?:/\s*|per\s+|pr\.?\s*){unit_re}\b",
         rf"(?:kr\s*)?{value_re}\s*(?:kr\s*)?{unit_re}\b",
         rf"(?:/\s*|per\s+|pr\.?\s*){unit_re}\b[^0-9]{{0,60}}(?:kr\s*)?{value_re}",
     ]
-
     for pattern_index, pattern in enumerate(patterns):
         for match in re.finditer(pattern, text, flags=re.I):
             groups = match.groups()
@@ -72,17 +59,13 @@ def robust_parse_product_price(text):
             context = text[max(0, match.start() - 100):min(len(text), match.end() + 100)]
             if bad_re.search(context):
                 continue
-            candidates.append({
-                "price": price,
-                "unit": unit_name(unit),
-                "distance": abs(match.start() - text.lower().find("salgspris")),
-            })
-
-    for wanted_unit in ("stk", "pakke", "m"):
+            candidates.append({"price": price, "unit": unit_name(unit)})
+    # Prefer explicit price per meter. The old scraper preferred stk first,
+    # which caused a stykkpris such as 301.92 to be shown instead of 62.90/m.
+    for wanted_unit in ("m", "stk", "pakke"):
         matching = [c for c in candidates if c["unit"] == wanted_unit]
         if matching:
             return matching[0]["price"], matching[0]["unit"]
-
     for label in ("salgspris", "nettpris", "pris"):
         for match in re.finditer(label, text, flags=re.I):
             context = text[match.start():match.start() + 300]
@@ -94,52 +77,30 @@ def robust_parse_product_price(text):
             price = number(price_match.group(1))
             if price is None or not 0 < price < 100000:
                 continue
-            unit_match = re.search(
-                r"(?:/\s*|per\s+|pr\.?\s*)" + unit_re + r"\b",
-                context,
-                flags=re.I,
-            )
+            unit_match = re.search(r"(?:/\s*|per\s+|pr\.?\s*)" + unit_re + r"\b", context, flags=re.I)
             return price, unit_name(unit_match.group(1)) if unit_match else "stk"
-
     return None, None
-
 
 scraper.parse_product_price = robust_parse_product_price
 
-# Manglende dimensjoner som ikke alltid blir funnet fra kategorisidene.
-# Vi bruker konkrete produktsider slik at 48x148 og 48x198 blir hentet også
-# hos OBS og Bygger'n, både ubehandlet og impregnert.
 scraper.KNOWN_PRODUCTS.extend([
-    # OBS BYGG – ubehandlet
     ("OBS BYGG Verdal", "https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/ubehandlet-konstruksjonsvirke/3019166", "48x148", "ubh"),
     ("OBS BYGG Verdal", "https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/ubehandlet-konstruksjonsvirke/3019328", "48x198", "ubh"),
-    # OBS BYGG – impregnert
     ("OBS BYGG Verdal", "https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/impregnert-konstruksjonsvirke-----0-2514104-2291725/3003403", "48x148", "imp"),
     ("OBS BYGG Verdal", "https://www.obsbygg.no/trelast-og-tyngre-byggevarer/treverk/konstruksjonsvirke/impregnert-konstruksjonsvirke-----0-2514104-2291725/3003423", "48x198", "imp"),
-    # Bygger'n – ubehandlet
     ("Bygger'n Verdal", "https://www.byggern.no/product/54236866", "48x148", "ubh"),
     ("Bygger'n Verdal", "https://www.byggern.no/product/54237025", "48x198", "ubh"),
-    # Bygger'n – impregnert
     ("Bygger'n Verdal", "https://www.byggern.no/product/54177506", "48x148", "imp"),
     ("Bygger'n Verdal", "https://www.byggern.no/product/54177525", "48x198", "imp"),
 ])
 
 
 def _click_xl_store(page):
-    """Velg XL-BYGG Skogn selv om varehusdialogen har en annen DOM."""
     if "xl-bygg.no" not in str(page.url).lower():
         return False
-
-    patterns = [
-        re.compile(r"^\s*Velg varehus\s*$", re.I),
-        re.compile(r"Velg varehus", re.I),
-    ]
     opened = False
-    for pattern in patterns:
-        for locator in (
-            page.get_by_role("button", name=pattern),
-            page.get_by_text(pattern),
-        ):
+    for pattern in (re.compile(r"^\s*Velg varehus\s*$", re.I), re.compile(r"Velg varehus", re.I)):
+        for locator in (page.get_by_role("button", name=pattern), page.get_by_text(pattern)):
             try:
                 for i in range(min(locator.count(), 10)):
                     item = locator.nth(i)
@@ -154,17 +115,9 @@ def _click_xl_store(page):
                 break
         if opened:
             break
-
     if not opened:
         return False
-
-    for selector in (
-        "input[placeholder*='Søk' i]",
-        "input[placeholder*='butikk' i]",
-        "input[placeholder*='varehus' i]",
-        "input[aria-label*='Søk' i]",
-        "input[type='search']",
-    ):
+    for selector in ("input[placeholder*='Søk' i]", "input[placeholder*='butikk' i]", "input[placeholder*='varehus' i]", "input[aria-label*='Søk' i]", "input[type='search']"):
         try:
             loc = page.locator(selector)
             for i in range(min(loc.count(), 10)):
@@ -175,89 +128,80 @@ def _click_xl_store(page):
                     break
         except Exception:
             pass
-
-    store_re = re.compile(r"(?:XL-BYGG\s*)?(?:Gunnar\s*T\.\s*Strøm.*)?Skogn", re.I)
-    candidates = [
-        page.get_by_text(store_re),
-        page.locator("button, a, [role='button'], [role='option']").filter(has_text=store_re),
-    ]
-    for locator in candidates:
+    pattern = re.compile(r"(?:XL-BYGG\s*)?(?:Gunnar\s*T\.\s*Strøm.*)?Skogn", re.I)
+    for locator in (page.get_by_text(pattern), page.locator("button, a, [role='button'], [role='option']").filter(has_text=pattern)):
         try:
             for i in range(min(locator.count(), 20)):
                 item = locator.nth(i)
-                if not item.is_visible(timeout=250):
-                    continue
-                try:
-                    button = item.locator("xpath=ancestor::*[self::li or @role='option' or self::div][1]//button").first
-                    if button.count() and button.is_visible(timeout=200):
-                        button.click(timeout=4000)
-                    else:
-                        item.click(timeout=4000)
-                except Exception:
+                if item.is_visible(timeout=250):
                     item.click(timeout=4000)
-                page.wait_for_timeout(2200)
-                return True
+                    page.wait_for_timeout(2200)
+                    print("STRICT STORE SELECTED XL-BYGG Skogn")
+                    return True
         except Exception:
             pass
+    print("STRICT STORE SELECT FAILED XL-BYGG Skogn")
+    return False
 
+
+def _strict_choose_store(page, store_name):
+    if store_name == "XL-BYGG Skogn":
+        return _click_xl_store(page)
+    config = scraper.STORES[store_name]
+    city = config["city"]
+    exact_names = [store_name] + [x for x in config.get("aliases", []) if x.lower() != city.lower()]
     try:
-        rows = page.locator("li, [role='option'], tr, .store, .warehouse, [class*='store' i]").filter(has_text=re.compile(r"Skogn", re.I))
-        for i in range(min(rows.count(), 10)):
-            row = rows.nth(i)
-            if not row.is_visible(timeout=200):
-                continue
-            btn = row.get_by_role("button", name=re.compile(r"Velg|Velg varehus", re.I)).first
-            if btn.count() and btn.is_visible(timeout=200):
-                btn.click(timeout=4000)
-                page.wait_for_timeout(2200)
-                return True
+        scraper.click_store_picker(page)
     except Exception:
         pass
-
+    for selector in ("input[placeholder*='Søk' i]", "input[placeholder*='butikk' i]", "input[placeholder*='varehus' i]", "input[aria-label*='Søk' i]", "input[type='search']"):
+        try:
+            loc = page.locator(selector)
+            for i in range(min(loc.count(), 10)):
+                inp = loc.nth(i)
+                if inp.is_visible(timeout=250):
+                    inp.fill(city)
+                    page.wait_for_timeout(1200)
+                    break
+        except Exception:
+            pass
+    # Never click the generic city name; only an exact branch/store name.
+    for name in exact_names:
+        for locator in (page.get_by_text(name, exact=True), page.get_by_role("button", name=re.compile(r"^" + re.escape(name) + r"$", re.I)), page.get_by_role("option", name=re.compile(r"^" + re.escape(name) + r"$", re.I))):
+            try:
+                for i in range(min(locator.count(), 20)):
+                    item = locator.nth(i)
+                    if item.is_visible(timeout=250):
+                        item.click(timeout=4000)
+                        page.wait_for_timeout(2200)
+                        print(f"STRICT STORE SELECTED {store_name}")
+                        return True
+            except Exception:
+                pass
+    print(f"STRICT STORE SELECT FAILED {store_name}")
     return False
+
+scraper.choose_store = _strict_choose_store
 
 
 def robust_scrape_product(page, store_name, url, dimension, kind):
     print(f"CHECK {store_name} {dimension} {kind} {url}")
     page.goto(url, wait_until="domcontentloaded", timeout=45000)
     page.wait_for_timeout(1800)
-
-    selected = False
-    if store_name == "XL-BYGG Skogn":
-        selected = _click_xl_store(page)
-
-    if not selected:
-        try:
-            selected = scraper.choose_store(page, store_name)
-        except Exception as exc:
-            print(f"STORE PICKER ERROR {store_name}: {exc}")
-
-    page.wait_for_timeout(2500 if store_name == "XL-BYGG Skogn" else 1200)
+    selected = scraper.choose_store(page, store_name)
+    page.wait_for_timeout(1800)
     text = scraper.visible_text(page)
-
     if not scraper.dimension_matches(text[:30000], dimension):
         print(f"NO DIMENSION {dimension}: {url}")
         return None, None, selected
-
     price, unit = robust_parse_product_price(text)
     if price is None:
         price, unit = scraper.jsonld_price(page)
-
-    if price is None:
-        try:
-            attrs = page.locator("[aria-label], [title]").evaluate_all(
-                "els => els.map(e => (e.getAttribute('aria-label') || '') + ' ' + (e.getAttribute('title') || '')).join(' ')"
-            )
-            price, unit = robust_parse_product_price(attrs)
-        except Exception:
-            pass
-
     if price is None:
         print(f"NO PRODUCT PRICE {store_name} {dimension}: {url}")
     else:
         print(f"FOUND {store_name} {dimension} {kind}: {price:.2f} / {unit}")
     return price, unit, selected
-
 
 scraper.scrape_product = robust_scrape_product
 scraper.main()
